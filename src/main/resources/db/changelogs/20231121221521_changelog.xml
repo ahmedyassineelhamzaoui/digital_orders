@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="ahmed (generated)" id="1700604928409-1">
+        <createTable tableName="categories">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-2">
+        <createTable tableName="equipments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="registration_number" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="rental_price" type="DOUBLE"/>
+            <column name="category_id" type="BIGINT"/>
+            <column name="equipment_status" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-3">
+        <createTable tableName="reservation_equipment">
+            <column name="reservation_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="equipment_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-4">
+        <createTable tableName="reservations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="reservation_date" type="datetime"/>
+            <column name="return_date" type="datetime"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-5">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-6">
+        <createIndex indexName="FK54jd8xubwjapofp3tqp9lmxx0" tableName="equipments">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-7">
+        <createIndex indexName="FKb5g9io5h54iwl2inkno50ppln" tableName="reservations">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-8">
+        <createIndex indexName="FKq1si9cfhtq2w2t7e28xlue94" tableName="reservation_equipment">
+            <column name="equipment_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-9">
+        <createIndex indexName="FKr28qm9i01j8lu098sglvnf1p9" tableName="reservation_equipment">
+            <column name="reservation_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-10">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="equipments" constraintName="FK54jd8xubwjapofp3tqp9lmxx0" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-11">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="reservations" constraintName="FKb5g9io5h54iwl2inkno50ppln" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-12">
+        <addForeignKeyConstraint baseColumnNames="equipment_id" baseTableName="reservation_equipment" constraintName="FKq1si9cfhtq2w2t7e28xlue94" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="equipments" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1700604928409-13">
+        <addForeignKeyConstraint baseColumnNames="reservation_id" baseTableName="reservation_equipment" constraintName="FKr28qm9i01j8lu098sglvnf1p9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="reservations" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
