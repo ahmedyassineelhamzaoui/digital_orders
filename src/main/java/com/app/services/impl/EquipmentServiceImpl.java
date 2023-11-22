@@ -53,6 +53,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	    existingEquipment.setRegistrationNumber(updatedEquipment.getRegistrationNumber());
 	    existingEquipment.setRentalPrice(updatedEquipment.getRentalPrice());
 	    existingEquipment.setName(updatedEquipment.getName());
+	    existingEquipment.setEquipmentStatus(updatedEquipment.getEquipmentStatus());
 	    existingEquipment.setCategory(updatedEquipment.getCategory());
 	    return equipmentRepository.save(existingEquipment);
 

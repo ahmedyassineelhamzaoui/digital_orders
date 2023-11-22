@@ -115,13 +115,13 @@ public class EquipmentController {
 	        response.put("message", "Category not found");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    }
-
+        equipment.setCategory(optionalCategory.get());
 	    try {
 	        EquipmentStatus equipmentStatus = equipment.getEquipmentStatus();
 	        equipment.setEquipmentStatus(equipmentStatus);
 	    } catch (IllegalArgumentException e) {
 	        response.put("status", "error");
-	        response	.put("message", "Invalid equipment status");
+	        response.put("message", "Invalid equipment status");
 	        return ResponseEntity.badRequest().body(response);
 	    }
 	    if(equipment.getRegistrationNumber().isEmpty()) {

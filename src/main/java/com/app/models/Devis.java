@@ -1,7 +1,6 @@
 package com.app.models;
 
-import com.app.models.enums.DemandeStatus;
-
+import com.app.models.enums.DevisStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,21 +14,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name="demandes")
-public class Demande {
+@Table(name="devis")
+public class Devis {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    @NotNull(message ="Status is required")
-	private DemandeStatus demandeStatus;
-    
-    @NotNull(message ="user is required")
-    @ManyToOne
-    @JoinColumn(name ="user_id")
-	private User user;
+	@NotNull(message="terms is required")
+	private String Terms;
+	
+	@NotNull(message="devis status is required")
+	private DevisStatus devisStatus;
+	
+	@ManyToOne
+	@JoinColumn(name="demande_id")
+	private Demande demande;
+		
 }
