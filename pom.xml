@@ -76,6 +76,7 @@
 					<url> jdbc:mysql://localhost:3306/digitalorder_db</url>
 					<driver>com.mysql.cj.jdbc.Driver</driver>
 					<username>root</username>
+					<password>eRROR404@</password>
                     <propertyFile>src/main/resources/application.properties</propertyFile>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
                      <changeLogFile>src/main/resources/db/changelog-master.xml</changeLogFile>
