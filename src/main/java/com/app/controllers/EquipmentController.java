@@ -71,7 +71,6 @@ public class EquipmentController {
 			
 		}
 	    Category category = equipment.getCategory();
-        System.out.println(category);
 		 Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(category.getId());
 		    if (optionalCategory.isEmpty()) {
 		        response.put("status", "error");
@@ -100,11 +99,7 @@ public class EquipmentController {
 	@PutMapping("/equipment/{id}")
 	public ResponseEntity<Map<String, Object>> updateEquipment(
 	        @PathVariable Long id,
-	        @RequestParam String name,
-	        @RequestParam String registrationNumber,
-	        @RequestParam String status,
-	        @RequestParam double rentalPrice,
-	        @RequestParam Long categoryId) {
+	        @RequestBody Equipment equipment) {
 	    Map<String, Object> response = new HashMap<>();
 
 	    Optional<Equipment> optionalEquipment = equipmentServiceImpl.getEquipmentById(id);
@@ -114,34 +109,26 @@ public class EquipmentController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    }
 
-	    Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(categoryId);
+	    Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(equipment.getCategory().getId());
 	    if (optionalCategory.isEmpty()) {
 	        response.put("status", "error");
 	        response.put("message", "Category not found");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    }
 
-	    Equipment equipment = optionalEquipment.get();
-	    equipment.setName(name);
-	    equipment.setEquipmentStatus(null);
-	    equipment.setRentalPrice(rentalPrice);
-	    equipment.setCategory(optionalCategory.get());
 	    try {
-	        EquipmentStatus equipmentStatus = EquipmentStatus.valueOf(status);
+	        EquipmentStatus equipmentStatus = equipment.getEquipmentStatus();
 	        equipment.setEquipmentStatus(equipmentStatus);
 	    } catch (IllegalArgumentException e) {
 	        response.put("status", "error");
 	        response	.put("message", "Invalid equipment status");
 	        return ResponseEntity.badRequest().body(response);
 	    }
-	    if(registrationNumber.isEmpty()) {
+	    if(equipment.getRegistrationNumber().isEmpty()) {
 	    	response.put("status", "error");
 	        response.put("message", "please provide a registration number");
 	        return ResponseEntity.badRequest().body(response);
-	    }else {
-		    equipment.setRegistrationNumber(registrationNumber);
 	    }
-
 	    try {
 	        Equipment updatedEquipment = equipmentServiceImpl.updateEquipment(id, equipment);
 	        response.put("status", "success");
