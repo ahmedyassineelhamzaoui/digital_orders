@@ -51,7 +51,7 @@ public class Equipment {
     @JoinColumn(name = "category_id")
     private Category category;
     
-    @Lob
-    private byte[] picture;
+    @NotNull(message="picture is required")
+    private String picture;
 
 }
