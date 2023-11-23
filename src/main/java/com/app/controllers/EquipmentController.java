@@ -71,13 +71,16 @@ public class EquipmentController {
 			
 		}
 	    Category category = equipment.getCategory();
-		 Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(category.getId());
-		    if (optionalCategory.isEmpty()) {
+	    if(category != null) {
+			Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(category.getId());
+			if (optionalCategory.isEmpty()) {
 		        response.put("status", "error");
 		        response.put("message", "Category not found");
 		        response.put("error number", 404);
 		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		    }
+	    }
+		    
 		try {
 			Equipment createdEquipment = equipmentServiceImpl.addEquipment(equipment);
 		    EquipmentDTO equipmentDTO = mapToDTO(createdEquipment);
@@ -108,14 +111,18 @@ public class EquipmentController {
 	        response.put("message", "Equipment not found");
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	    }
-
-	    Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(equipment.getCategory().getId());
-	    if (optionalCategory.isEmpty()) {
-	        response.put("status", "error");
-	        response.put("message", "Category not found");
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    }
-        equipment.setCategory(optionalCategory.get());
+        if(equipment.getCategory() !=null) {
+        	Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(equipment.getCategory().getId());
+    	    if (optionalCategory.isEmpty()) {
+    	        response.put("status", "error");
+    	        response.put("message", "Category not found");
+    	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    	    }
+            equipment.setCategory(optionalCategory.get());
+        }else {
+        	equipment.setCategory(null);
+        }
+	    
 	    try {
 	        EquipmentStatus equipmentStatus = equipment.getEquipmentStatus();
 	        equipment.setEquipmentStatus(equipmentStatus);
@@ -179,13 +186,17 @@ public class EquipmentController {
 	    equipmentDTO.setName(equipment.getName());
 
 	    CategoryDTO categoryDTO = new CategoryDTO();
-	    Category category = categoryServiceImpl.getCategoryById(equipment.getCategory().getId()).get();
-	    if (category != null) {
-	        categoryDTO.setId(category.getId());
-	        categoryDTO.setName(category.getName());
+	    if(equipment.getCategory() != null) {
+	    	Category category = categoryServiceImpl.getCategoryById(equipment.getCategory().getId()).get();
+		    if (category != null) {
+		        categoryDTO.setId(category.getId());
+		        categoryDTO.setName(category.getName());
+		    }
+		    equipmentDTO.setCategory(categoryDTO);
 	    }
-	    equipmentDTO.setCategory(categoryDTO);
+	    
 
 	    return equipmentDTO;
 	}
+	
 }
