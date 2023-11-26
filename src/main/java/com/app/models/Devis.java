@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Devis {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid2")
 	private Long id;
 	
 	@NotNull(message="terms is required")

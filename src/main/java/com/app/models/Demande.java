@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Demande {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid2")
 	private Long id;
 	
     @NotNull(message ="Status is required")

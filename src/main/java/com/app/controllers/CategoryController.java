@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.app.models.Category;
 import com.app.services.impl.CategoryServiceImpl;
-import com.app.services.impl.EquipmentServiceImpl;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -63,7 +59,7 @@ public class CategoryController {
 	}
 	@PutMapping("/categories/{id}")
 	public ResponseEntity<Map<String, Object>> updateCategory(
-	        @PathVariable Long id,
+	        @PathVariable UUID id,
 	        @RequestParam String category_name) {
 
 	    Map<String, Object> response = new HashMap<>();
@@ -110,7 +106,7 @@ public class CategoryController {
 		return ResponseEntity.ok(response);
 	}
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<Map<String,Object>> deleteCategory(@PathVariable Long id){
+    public ResponseEntity<Map<String,Object>> deleteCategory(@PathVariable UUID id){
     	Map<String,Object> response = new HashMap<String, Object>();
     	Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(id);
     	if(optionalCategory.isEmpty()) {

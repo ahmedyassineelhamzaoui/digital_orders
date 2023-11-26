@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Document {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid2")
 	private Long id;
 	
 	@OneToOne
