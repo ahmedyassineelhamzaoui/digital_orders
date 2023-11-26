@@ -2,10 +2,14 @@ package com.app.dto;
 
 import java.util.List;
 import com.app.models.Demande;
+import com.app.models.Devis;
 import com.app.models.enums.DevisStatus;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+
+@Builder
 public class DevisDTO {
 
 	
@@ -17,4 +21,12 @@ public class DevisDTO {
 	
 	@OneToMany(mappedBy = "devis")
 	private List<Demande> demandes;
+	
+	public Devis devis() {
+		return Devis.builder()
+				.devisStatus(devisStatus)
+				.Terms(Terms)
+				.demandes(demandes)
+				.build();
+	}
 }

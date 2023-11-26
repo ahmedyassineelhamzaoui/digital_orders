@@ -3,6 +3,7 @@ package com.app.models;
 import java.util.List;
 import java.util.UUID;
 
+import com.app.dto.DevisDTO;
 import com.app.models.enums.DevisStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="devis")
+@Builder
 public class Devis {
 
 	@Id
@@ -34,5 +37,12 @@ public class Devis {
 	
 	@OneToMany(mappedBy = "devis")
 	private List<Demande> demandes;
-		
+    
+	public DevisDTO DevisToDTO(){
+		return DevisDTO.builder()
+				.devisStatus(devisStatus)
+				.Terms(Terms)
+				.demandes(demandes)
+				.build();
+	}
 }
