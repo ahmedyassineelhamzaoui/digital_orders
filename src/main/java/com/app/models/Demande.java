@@ -1,6 +1,7 @@
 package com.app.models;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.app.models.enums.DemandeStatus;
 
@@ -26,7 +27,7 @@ public class Demande {
 
 	@Id
     @GeneratedValue(generator = "uuid2")
-	private Long id;
+	private UUID id;
 	
     @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
