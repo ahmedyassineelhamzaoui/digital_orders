@@ -39,7 +39,7 @@ public class Demande {
     @NotNull(message ="equipment to be rented is required")
     @ManyToOne
     @JoinColumn(name="equipment_id")
-    private Demande demande;
+    private Equipment Equipment;
     
     @NotNull(message ="start date is required")
 	@Future(message = "Start date must be in the future")
