@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.app.models.enums.DemandeStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -52,6 +53,7 @@ public class Demande {
 	private Double demandeCost;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
 }
