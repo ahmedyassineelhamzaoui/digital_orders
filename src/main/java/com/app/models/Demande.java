@@ -2,6 +2,8 @@ package com.app.models;
 
 import java.util.Date;
 
+import com.app.dto.DemandeDTO;
+import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,11 +25,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="demandes")
+@Builder
 public class Demande {
 
 	@Id
     @GeneratedValue(generator = "uuid2")
-	private Long id;
+	private UUID id;
 	
     @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
@@ -39,7 +43,7 @@ public class Demande {
     @NotNull(message ="equipment to be rented is required")
     @ManyToOne
     @JoinColumn(name="equipment_id")
-    private Demande demande;
+    private Equipment equipment;
     
     @NotNull(message ="start date is required")
 	@Future(message = "Start date must be in the future")
@@ -54,4 +58,15 @@ public class Demande {
 	@ManyToOne
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
+
+//	public DemandeDTO maptoDto() {
+//		return DemandeDTO.builder()
+//				.demandeStatus(demandeStatus.name())
+//				.user(user.getName())
+//				.equipment(equipment)
+//				.startDate(startDate)
+//				.endDate(endDate)
+//				.demandeCost(demandeCost).build();
+//
+//	}
 }
