@@ -1,16 +1,17 @@
 package com.app.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +21,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.app.dto.CategoryDTO;
 import com.app.dto.EquipmentDTO;
 import com.app.models.Category;
 import com.app.models.Equipment;
 import com.app.models.enums.EquipmentStatus;
 import com.app.services.impl.CategoryServiceImpl;
 import com.app.services.impl.EquipmentServiceImpl;
+import com.app.utils.FileUploadUtil;
 
 import jakarta.validation.Valid;
 
@@ -55,102 +57,101 @@ public class EquipmentController {
 
 		
 	}
-	@PostMapping("/equipment")
-	public ResponseEntity<Map<String,Object>> addEquipment(@Valid @RequestBody Equipment equipment,BindingResult bindingResult ){
-		Map<String,Object> response = new HashMap<String, Object>();
-		if(bindingResult.hasErrors()) {
-			response.put("status", "error");
-            response.put("message", "Validation failed");
-            Map<String, String> errors = new HashMap<>();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                errors.put(error.getObjectName(), error.getDefaultMessage());
-            }
-            response.put("errors", errors);
-            response.put("error number", 422);
-            return ResponseEntity.badRequest().body(response);
-			
-		}
-	    Category category = equipment.getCategory();
-	    if(category != null) {
-			Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(category.getId());
-			if (optionalCategory.isEmpty()) {
-		        response.put("status", "error");
-		        response.put("message", "Category not found");
-		        response.put("error number", 404);
-		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-		    }
-	    }
-		    
-		try {
-			Equipment createdEquipment = equipmentServiceImpl.addEquipment(equipment);
-		    EquipmentDTO equipmentDTO = mapToDTO(createdEquipment);
 
-			response.put("status", "success");
-			response.put("message", "equipment created successfuly");
-			response.put("Equipment",equipmentDTO);
-			return ResponseEntity.ok(response);
-		}catch(DataIntegrityViolationException e) {
-			response.put("status", "error");
-			response.put("message", "registration number already exist");
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-		}
+	@PostMapping("/equipment")
+	public ResponseEntity<Map<String,Object>> addEquipment(@Valid EquipmentDTO myequipment,
+			@RequestParam("registrationNumber") String registrationNumber,
+			@RequestParam("rentalPrice")        Double rentalPrice,
+			@RequestParam("name")               String name,
+			@RequestParam("equipmentStatus")    String equipmentStatus,
+			@RequestParam("category")           String category,
+			@RequestParam("image") MultipartFile image)
+			{
+		Map<String,Object> response = new HashMap<String, Object>();
 		
+		
+	    Equipment equipment = new Equipment();
+		try {
+			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+	         
+	        String filecode = FileUploadUtil.saveFile(fileName, image);
+	        
+	        if(category.trim().equals("")) {
+	        	equipment.setCategory(null);
+			}else {
+		        Optional<Category> categoryToFind = categoryServiceImpl.getCategoryById(UUID.fromString(category));
+	        	equipment.setCategory(categoryToFind.get());
+			}
+	        
+		    equipment.setRegistrationNumber(registrationNumber);
+		    equipment.setRentalPrice(rentalPrice);
+		    equipment.setName(name);
+		    equipment.setEquipmentStatus(EquipmentStatus.valueOf(equipmentStatus));
+	        equipment.setImage(filecode+"_"+fileName);
+	        
+		}catch(Exception e) {
+			response.put("status", "error");
+			response.put("message", e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+        
+		response.put("status","success");
+		response.put("equipment", equipmentServiceImpl.addEquipment(equipment));
+		return ResponseEntity.ok(response);
 	}
 	
 	
 	
 	@PutMapping("/equipment/{id}")
-	public ResponseEntity<Map<String, Object>> updateEquipment(
-	        @PathVariable Long id,
-	        @RequestBody Equipment equipment) {
+	public ResponseEntity<Map<String, Object>> updateEquipment(@Valid
+			EquipmentDTO myequipment,
+			@RequestParam("registrationNumber") String registrationNumber,
+			@RequestParam("rentalPrice")        Double rentalPrice,
+			@RequestParam("name")               String name,
+			@RequestParam("equipmentStatus")    String equipmentStatus,
+			@RequestParam("category")           String category,
+			@RequestParam("image") MultipartFile image,
+	        @PathVariable UUID id
+	        ) {
 	    Map<String, Object> response = new HashMap<>();
 
-	    Optional<Equipment> optionalEquipment = equipmentServiceImpl.getEquipmentById(id);
-	    if (optionalEquipment.isEmpty()) {
-	        response.put("status", "error");
-	        response.put("message", "Equipment not found");
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	    }
-        if(equipment.getCategory() !=null) {
-        	Optional<Category> optionalCategory = categoryServiceImpl.getCategoryById(equipment.getCategory().getId());
-    	    if (optionalCategory.isEmpty()) {
-    	        response.put("status", "error");
-    	        response.put("message", "Category not found");
-    	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    	    }
-            equipment.setCategory(optionalCategory.get());
-        }else {
-        	equipment.setCategory(null);
-        }
-	    
-	    try {
-	        EquipmentStatus equipmentStatus = equipment.getEquipmentStatus();
-	        equipment.setEquipmentStatus(equipmentStatus);
-	    } catch (IllegalArgumentException e) {
-	        response.put("status", "error");
-	        response.put("message", "Invalid equipment status");
+		Equipment e= new Equipment();
+		
+		if(category.trim().equals("")) {
+        	e.setCategory(null);
+		}else {
+	        Optional<Category> categoryToFind = categoryServiceImpl.getCategoryById(UUID.fromString(category));
+        	e.setCategory(categoryToFind.get());
+		}
+		
+        try {
+        	if (image != null && !image.isEmpty()) {
+        		 String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+     			 String filecode = FileUploadUtil.saveFile(fileName, image);
+     	         e.setImage(filecode+"_"+fileName);
+        	}
+    	   
+	        e.setRegistrationNumber(registrationNumber);
+	        e.setEquipmentStatus(EquipmentStatus.valueOf(equipmentStatus));
+		    e.setRentalPrice(rentalPrice);
+		    e.setName(name);
+				
+		} catch (Exception ex) {
+			response.put("status", "error");
+	        response.put("message", ex.getMessage());
 	        return ResponseEntity.badRequest().body(response);
-	    }
-	    if(equipment.getRegistrationNumber().isEmpty()) {
-	    	response.put("status", "error");
-	        response.put("message", "please provide a registration number");
-	        return ResponseEntity.badRequest().body(response);
-	    }
-	    try {
-	        Equipment updatedEquipment = equipmentServiceImpl.updateEquipment(id, equipment);
+		}
+       	    
+	        Equipment updatedEquipment = equipmentServiceImpl.updateEquipment(id, e);
 	        response.put("status", "success");
 	        response.put("message", "Equipment updated successfully");
 	        response.put("Equipment", updatedEquipment);
 	        return ResponseEntity.ok(response);
-	    } catch (DataIntegrityViolationException e) {
-	        response.put("status", "error");
-	        response.put("message", "Equipment with this registration " + equipment.getRegistrationNumber() + " already exists");
-	        return ResponseEntity.badRequest().body(response);
-	    }
+	   
 	}
 
 	@DeleteMapping("/equipment/{id}")
-	public ResponseEntity<Map<String,Object>> deleteEquipment(@PathVariable Long id){
+	public ResponseEntity<Map<String,Object>> deleteEquipment(@PathVariable UUID id){
 		Map<String,Object> response = new HashMap<String, Object>();
 	    Optional<Equipment> optionalEquipment = equipmentServiceImpl.getEquipmentById(id);
 		if (optionalEquipment.isEmpty()) {
@@ -176,27 +177,6 @@ public class EquipmentController {
 		response.put("status", "success");
 		response.put("equipments",equipments );
 		return ResponseEntity.ok(response);
-	}
-
-	private EquipmentDTO mapToDTO(Equipment equipment) {
-	    EquipmentDTO equipmentDTO = new EquipmentDTO();
-	    equipmentDTO.setId(equipment.getId());
-	    equipmentDTO.setRegistrationNumber(equipment.getRegistrationNumber());
-	    equipmentDTO.setRentalPrice(equipment.getRentalPrice());
-	    equipmentDTO.setName(equipment.getName());
-
-	    CategoryDTO categoryDTO = new CategoryDTO();
-	    if(equipment.getCategory() != null) {
-	    	Category category = categoryServiceImpl.getCategoryById(equipment.getCategory().getId()).get();
-		    if (category != null) {
-		        categoryDTO.setId(category.getId());
-		        categoryDTO.setName(category.getName());
-		    }
-		    equipmentDTO.setCategory(categoryDTO);
-	    }
-	    
-
-	    return equipmentDTO;
 	}
 	
 }

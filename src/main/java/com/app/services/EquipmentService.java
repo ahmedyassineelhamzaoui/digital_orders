@@ -2,6 +2,7 @@ package com.app.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.app.models.Equipment;
 
@@ -9,11 +10,11 @@ public interface EquipmentService {
 
 	List<Equipment> getAllEquipment();
 
-    Optional<Equipment> getEquipmentById(Long equipmentId);
+    Optional<Equipment> getEquipmentById(UUID equipmentId);
 
     Equipment addEquipment(Equipment equipment);
 
-    Equipment updateEquipment(Long equipmentId, Equipment updatedEquipment);
+    Equipment updateEquipment(UUID equipmentId, Equipment updatedEquipment);
 
-    void deleteEquipment(Long equipmentId);
+    void deleteEquipment(UUID equipmentId);
 }

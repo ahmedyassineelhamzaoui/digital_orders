@@ -1,30 +1,20 @@
 package com.app.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import com.app.models.User;
-import com.app.repositories.UserRepository;
 
-@Service
-public class UserService {
+public interface UserService {
 
-	@Autowired
-	private UserRepository userRepository;
-	public User addUser(User user) {
-		return userRepository.save(user);
-	}
-	 public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId()).orElse(null);
-        if (existingUser == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
-
-        User updatedUser = userRepository.save(existingUser);
-
-        return updatedUser;
-    }
+	List<User> getAllUsers();
+	
+	User saveUser(User user);
+	
+	User updateUser(UUID id,User user);
+	
+	void deleteUser(UUID id);
+	
+	Optional<User> findUser(UUID id);
 }

@@ -2,13 +2,13 @@ package com.app.services.impl;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.app.models.Equipment;
 import com.app.repositories.EquipmentRepository;
 import com.app.services.EquipmentService;
+
 
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
@@ -22,7 +22,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
-	public Optional<Equipment> getEquipmentById(Long equipmentId) {
+	public Optional<Equipment> getEquipmentById(UUID equipmentId) {
 		return equipmentRepository.findById(equipmentId);
 	}
 
@@ -32,7 +32,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 	}
 
 	@Override
-	public Equipment updateEquipment(Long equipmentId, Equipment updatedEquipment) {
+	public Equipment updateEquipment(UUID equipmentId, Equipment updatedEquipment) {
 		Optional<Equipment> optionalEquipment = getEquipmentById(equipmentId);
 		if(optionalEquipment.isEmpty()) {
 			return null;
@@ -50,6 +50,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 	    if (updatedEquipment.getRentalPrice() != null) {
 	        existingEquipment.setRentalPrice(updatedEquipment.getRentalPrice());
 	    }
+	    if (updatedEquipment.getImage() != null && !updatedEquipment.getImage().isEmpty()) {
+	        existingEquipment.setImage(updatedEquipment.getImage());
+	    }
 	    existingEquipment.setRegistrationNumber(updatedEquipment.getRegistrationNumber());
 	    existingEquipment.setRentalPrice(updatedEquipment.getRentalPrice());
 	    existingEquipment.setName(updatedEquipment.getName());
@@ -62,7 +65,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         return equipmentRepository.searchByGivenType(keyword, keyword);
     }
 	@Override
-	public void deleteEquipment(Long equipmentId) {
+	public void deleteEquipment(UUID equipmentId) {
 		 equipmentRepository.deleteById(equipmentId);
 	}
 }

@@ -1,6 +1,11 @@
 package com.app.models;
 
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import com.app.dto.EquipmentDTO;
 import com.app.models.enums.EquipmentStatus;
 
 import jakarta.persistence.Column;
@@ -12,12 +17,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,32 +33,34 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Equipment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    private UUID id;
 
-    @NotBlank(message = "Registration number is required")
     @Column(unique=true)
     private String registrationNumber;
 
-    @NotNull(message="Price is required")
-    @Positive(message = "Price must be positive")
     private Double rentalPrice;
 
-    @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name must be at most 100 characters")
     private String name;
 
-    @NotNull(message ="Status is required")
     private EquipmentStatus equipmentStatus;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
     
-    @Lob
-    private byte[] picture;
+    private String image;
+    
+    public EquipmentDTO toDto() {
+    	return EquipmentDTO.builder()
+    			.name(name)
+    			.registrationNumber(registrationNumber)
+    			.rentalPrice(rentalPrice)
+    			.build();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.app.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.app.models.Equipment;
 
 @Repository
-public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
+public interface EquipmentRepository extends JpaRepository<Equipment, UUID> {
 
 
 	@Query("SELECT e FROM Equipment e WHERE e.name LIKE %?1% or e.registrationNumber LIKE %?2%  ")

@@ -2,6 +2,7 @@ package com.app.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Optional<Category> getCategoryById(Long categoryId) {
-		return categoryRepository.findById(categoryId);
+	public Optional<Category> getCategoryById(UUID id) {
+		return categoryRepository.findById(id);
 	}
 
 	@Override
@@ -32,14 +33,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Category updateCategory(Long categoryId, Category category) {		
+	public Category updateCategory(UUID categoryId, Category category) {		
 	      Category categoryFinded = getCategoryById(categoryId).get();
 	      categoryFinded.setName(category.getName());
 	      return categoryRepository.save(categoryFinded);
 	}
 
 	@Override
-	public void deleteCategory(Long categoryId) {
+	public void deleteCategory(UUID categoryId) {
 		categoryRepository.deleteById(categoryId);
 	}
 	

@@ -1,9 +1,19 @@
 package com.app.dto;
 
-import lombok.Data;
+import com.app.models.Category;
 
-@Data
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
+
+@Builder
 public class CategoryDTO {
-    private Long id;
+    
+	@NotEmpty(message = "name is required")
     private String name;
+	
+	public Category mapToEntity() {
+		return Category.builder()
+				.name(name)
+				.build();
+	}
 }

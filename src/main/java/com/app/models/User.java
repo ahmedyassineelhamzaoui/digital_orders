@@ -1,7 +1,11 @@
 package com.app.models;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
+
+import com.app.dto.UserDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +20,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,23 +30,25 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
 
 	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(generator = "uuid2")
+	private UUID id;
 	
-	@NotBlank(message="Name is required")
-	@Size(max=100,message="Name must be at most 100 characters")
 	private String name;
 	
-	@NotBlank(message="Email is required")
-	@Email(message="Invalid email format")
-	@Size(max=255,message="email must be at most 255 characters")
 	@Column(unique = true)
 	private String email;
-	@NotNull(message="role is required")
 	
-	@NotNull(message="role is required")
 	private Role role;
+	
+	public UserDTO maptoDto() {
+		return UserDTO.builder()
+				.name(name)
+				.email(email)
+				.role(role)
+				.build();
+	}
 }
