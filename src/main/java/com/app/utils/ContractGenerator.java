@@ -42,7 +42,7 @@ public class ContractGenerator {
         demande.setDemandeCost(55d);
         demande.setDevis(devis);
         demande.setDemandeCost(200d);
-        demande.setStartDate(waqet);
+        demande.setStartDate(new Date());
         demande.setEndDate(waqet);
 
         demande.setDemandeStatus(DemandeStatus.ACCEPTED);
