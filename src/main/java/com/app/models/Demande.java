@@ -1,6 +1,7 @@
 package com.app.models;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.app.dto.DemandeDTO;
 import com.app.dto.EquipmentDTO;
@@ -59,14 +60,13 @@ public class Demande {
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
 
-//	public DemandeDTO maptoDto() {
-//		return DemandeDTO.builder()
-//				.demandeStatus(demandeStatus.name())
-//				.user(user.getName())
-//				.equipment(equipment)
-//				.startDate(startDate)
-//				.endDate(endDate)
-//				.demandeCost(demandeCost).build();
-//
-//	}
+	public Demande maptoDEntity() {
+		return Demande.builder()
+				.demandeStatus(demandeStatus)
+				.user(user)
+				.equipment(equipment)
+				.startDate(startDate)
+				.endDate(endDate)
+				.demandeCost(demandeCost).build();
+	}
 }
