@@ -10,6 +10,6 @@ public interface ContractService {
     List<Contract> getAllContracts();
 
     Contract saveContract(Contract contract);
-//    void archiveContract(UUID contractId);
+    void archiveContract(UUID contractId);
 
 }

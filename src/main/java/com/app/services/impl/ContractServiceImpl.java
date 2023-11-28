@@ -23,5 +23,21 @@ public class ContractServiceImpl implements ContractService {
     }
 
 
+    // Method to archive a contract by ID
+    public void archiveContract(UUID contractId) {
+        Optional<Contract> optionalContract = contractRepository.findById(contractId);
+
+        if (optionalContract.isPresent()) {
+            Contract contract = optionalContract.get();
+
+            if (!contract.isArchived()) {
+                contract.setArchived(true);
+                contractRepository.save(contract);
+            }
+        } else {
+            throw new EntityNotFoundException("Contract with ID " + contractId + " not found");
+        }
+    }
+
 
 }
