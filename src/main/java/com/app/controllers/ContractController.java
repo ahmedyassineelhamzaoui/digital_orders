@@ -5,11 +5,10 @@ import com.app.services.impl.ContractServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -22,4 +21,13 @@ public class ContractController {
            List<Contract> contracts= contractServiceImpl.getAllContracts();
         return new ResponseEntity<>(contracts, HttpStatus.OK);
     }
+
+
+    @PostMapping("/save")
+    public ResponseEntity<Contract> saveContract(@RequestBody Contract contract) {
+        Contract savedContract = contractServiceImpl.saveContract(contract);
+        return new ResponseEntity<>(savedContract, HttpStatus.CREATED);
+    }
+
+
 }

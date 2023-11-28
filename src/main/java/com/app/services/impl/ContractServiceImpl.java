@@ -4,12 +4,11 @@ import com.app.dto.ContractDTO;
 import com.app.models.Contract;
 import com.app.repositories.ContractRepository;
 import com.app.services.ContractService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -19,6 +18,9 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> getAllContracts(){return contractRepository.findAll();}
 
+    public Contract saveContract(Contract contract) {
+        return contractRepository.save(contract);
+    }
 
 
 

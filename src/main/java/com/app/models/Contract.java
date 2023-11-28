@@ -33,8 +33,9 @@ public class Contract {
 	
 	@NotNull(message="End date is required")
 	private Date endDate;
-	
-	private boolean isArchived;
+
+	@Builder.Default
+	private boolean isArchived= false;
 	
 	@OneToOne
 	@JoinColumn(name="devis_id")
