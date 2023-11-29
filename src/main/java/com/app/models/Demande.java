@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.app.dto.DemandeDTO;
+import com.app.dto.DemandeDTO2;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 
@@ -62,6 +63,12 @@ public class Demande {
 				.startDate(startDate)
 				.endDate(endDate)
 				.demandeCost(demandeCost)
+				.build();
+	}
+	public DemandeDTO2 mapToDemandeDTO2(){
+		return DemandeDTO2.builder()
+				.startDate(startDate)
+				.endDate(endDate)
 				.build();
 	}
 }

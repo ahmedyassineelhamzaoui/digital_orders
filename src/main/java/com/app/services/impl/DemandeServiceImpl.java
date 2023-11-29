@@ -4,6 +4,7 @@ import com.app.dto.DemandeDTO;
 import com.app.models.Demande;
 import com.app.models.Equipment;
 import com.app.models.User;
+import com.app.models.enums.DemandeStatus;
 import com.app.repositories.DemandeRepository;
 import com.app.services.DemandeService;
 import com.app.services.UserService;
@@ -29,11 +30,14 @@ public class DemandeServiceImpl implements DemandeService {
         Map<String,Object> response = new HashMap<String, Object>();
         User user = userServiceImpl.findUser(demande.getUser().getId()).orElseThrow(()->new NoSuchElementException("this user doesn't exist"));
         Equipment equipment = equipmentServiceImpl.getEquipmentById(demande.getEquipment().getId()).orElseThrow(()->new NoSuchElementException("this equipment doesn't exist"));
-//        if(!allreadyReserved(demande.getEquipment().getId() , demande.getStartDate() ,demande.getEndDate()).isEmpty()){
-//            response.put("status", "error");
-//            response.put("message", "this Equipment is already reserved");
-//            return ResponseEntity.badRequest().body(response);
-//        }
+        List<Demande> demandeList = allreadyReserved(demande.getEquipment().getId() , demande.getStartDate() ,demande.getEndDate());
+        if(!demandeList.isEmpty()){
+            response.put("status", "error");
+            response.put("message", "this Equipment is already reserved");
+            response.put("damande", demandeList.stream().map(demande1 -> demande1.mapToDemandeDTO2() ));
+            return ResponseEntity.badRequest().body(response);
+        }
+        demande.setDemandeStatus(DemandeStatus.PENDING);
         demande.setEquipment(equipment);
         demande.setUser(user);
         DemandeDTO demandeDTO =demandeRepository.save(demande).mapToDemandeDTO();
@@ -45,7 +49,7 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     private List<Demande> allreadyReserved(UUID equipmentnId, Date startDate, Date endDate) {
-        return null;
+        return demandeRepository.getRentedEquipment(equipmentnId,startDate , endDate , DemandeStatus.ACCEPTED);
     }
 
 
