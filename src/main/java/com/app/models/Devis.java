@@ -5,7 +5,10 @@ import java.util.UUID;
 
 import com.app.dto.DevisDTO;
 import com.app.models.enums.DevisStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +38,8 @@ public class Devis {
 	
 	private DevisStatus devisStatus;
 	
-	@OneToMany(mappedBy = "devis")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "devis" ,fetch = FetchType.LAZY)
 	private List<Demande> demandes;
     
 	public DevisDTO DevisToDTO(){

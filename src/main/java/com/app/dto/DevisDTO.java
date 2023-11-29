@@ -22,7 +22,7 @@ public class DevisDTO {
 	@OneToMany(mappedBy = "devis")
 	private List<Demande> demandes;
 	
-	public Devis devis() {
+	public Devis MapToDevis() {
 		return Devis.builder()
 				.devisStatus(devisStatus)
 				.Terms(Terms)

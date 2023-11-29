@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.app.models.enums.DemandeStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name="demandes")
 public class Demande {
 
@@ -40,7 +44,7 @@ public class Demande {
     @NotNull(message ="equipment to be rented is required")
     @ManyToOne
     @JoinColumn(name="equipment_id")
-    private Demande demande;
+    private Equipment equipment;
     
     @NotNull(message ="start date is required")
 	@Future(message = "Start date must be in the future")
@@ -52,7 +56,10 @@ public class Demande {
 	
 	private Double demandeCost;
 	
+    @JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
+    
+    
 }

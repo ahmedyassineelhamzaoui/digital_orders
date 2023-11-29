@@ -26,9 +26,6 @@ import lombok.Data;
 
 @Builder
 public class EquipmentDTO {
-	    
-	@Autowired 
-	private CategoryServiceImpl categoryServiceImpl;
 
 	    @NotBlank(message = "Registration number is required")
 	    @Column(unique=true)
@@ -55,6 +52,7 @@ public class EquipmentDTO {
 	    			.name(name)
 	    			.registrationNumber(registrationNumber)
 	    			.rentalPrice(rentalPrice)
+	    			.image(image.getOriginalFilename())
 	    			.build();
 	    }
 
