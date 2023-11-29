@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface DemandeService {
 
 
-    public DemandeDTO createDemand(DemandeDTO demandeDto);
+//    public DemandeDTO createDemand(DemandeDTO demandeDto);
     public List<Demande> getAllDemandes();
     public void deleteDemande(UUID id);
     public Demande updateDemande(UUID demandId , Demande demande);

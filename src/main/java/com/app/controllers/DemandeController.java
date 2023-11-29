@@ -16,10 +16,10 @@ public class DemandeController {
         @Autowired
         private DemandeServiceImpl demandeServiceImpl ;
 
-        @PostMapping("/demande")
-        public DemandeDTO createDemand(@RequestBody DemandeDTO demande){
-            return demandeServiceImpl.createDemand(demande);
-        }
+//        @PostMapping("/demande")
+//        public DemandeDTO createDemand(@RequestBody DemandeDTO demande){
+//            return demandeServiceImpl.createDemand(demande);
+//        }
 
 
         @GetMapping("/demandes")

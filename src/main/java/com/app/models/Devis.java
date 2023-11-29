@@ -1,6 +1,7 @@
 package com.app.models;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.app.models.enums.DevisStatus;
 import jakarta.persistence.Entity;
@@ -25,7 +26,7 @@ public class Devis {
 
 	@Id
     @GeneratedValue(generator = "uuid2")
-	private Long id;
+	private UUID id;
 	
 	@NotNull(message="terms is required")
 	private String Terms;

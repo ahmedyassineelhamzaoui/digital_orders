@@ -17,13 +17,13 @@ public class DemandeServiceImpl implements DemandeService {
 
     @Autowired
     private DemandeRepository demandeRepository;
-    @Override
-    public DemandeDTO createDemand(DemandeDTO demandeDto) {
-        User user = demandeRepository.getUserByName(demandeDto.getUser());
-//        return demandeRepository.save(demande);
-//        Demande demande = Demande.builder().demandeStatus().build();
-        return demandeDto;
-    }
+//    @Override
+//    public DemandeDTO createDemand(DemandeDTO demandeDto) {
+//        User user = demandeRepository.getUserByName(demandeDto.getUser());
+////        return demandeRepository.save(demande);
+////        Demande demande = Demande.builder().demandeStatus().build();
+//        return demandeDto;
+//    }
 
     @Override
     public List<Demande> getAllDemandes() {

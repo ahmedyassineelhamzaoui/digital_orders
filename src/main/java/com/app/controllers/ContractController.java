@@ -52,6 +52,17 @@ public class ContractController {
         return new ResponseEntity<>(savedContract, HttpStatus.CREATED);
     }
 
+    @PostMapping("/save/{devisId}")
+    public ResponseEntity<String> saveContract(@RequestBody Contract contract, @PathVariable UUID devisId) {
+        try {
+            contractServiceImpl.saveContractwithcheck(contract, devisId);
+            return ResponseEntity.ok("Contract saved successfully.");
+
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/archive-contract/{contractId}")
     public ResponseEntity<String> archiveContract(@PathVariable UUID contractId) {
