@@ -43,6 +43,8 @@ public class Demande {
     @NotNull(message ="equipment to be rented is required")
     @ManyToOne
     @JoinColumn(name="equipment_id")
+    @JoinColumn(name="equipment_id")
+
     private Equipment equipment;
     
     @NotNull(message ="start date is required")
