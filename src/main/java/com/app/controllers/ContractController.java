@@ -10,12 +10,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import com.app.utils.ContractGenerator;
+import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -48,6 +56,16 @@ public class ContractController {
         return new ResponseEntity<>(savedContract, HttpStatus.CREATED);
     }
 
+    @PostMapping("/save/{devisId}")
+    public ResponseEntity<String> saveContract(@RequestBody Contract contract, @PathVariable UUID devisId) {
+        try {
+            contractServiceImpl.saveContractwithcheck(contract, devisId);
+            return ResponseEntity.ok("Contract saved successfully.");
+
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
     @PostMapping("/archive-contract/{contractId}")
@@ -58,7 +76,7 @@ public class ContractController {
 
 
     @GetMapping("/export-to-pdf")
-    public void generatePdfFile(HttpServletResponse response) throws IOException {
+    public void generatePdfFile(HttpServletResponse response) throws DocumentException, IOException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
         String currentDateTime = dateFormat.format(new Date());

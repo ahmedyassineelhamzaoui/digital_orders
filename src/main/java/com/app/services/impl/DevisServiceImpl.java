@@ -38,6 +38,11 @@ public class DevisServiceImpl implements DevisService {
 		List<Demande> mydemandes = new ArrayList<>();
 		for(Demande d:devis.getDemandes()) {
 			Demande demandeToFind = demandeServiceImpl.getDemandeById(d.getId()).get();
+			if(demandeToFind == null) {
+				response.put("status", "error");
+				response.put("message", "demande that has the id "+demandeToFind.getId()+" not exist");
+		    	return ResponseEntity.badRequest().body(response);
+			}
 			if(demandeToFind.getDevis() != null) {
 				response.put("status", "error");
 				response.put("message", "demande that has the id "+demandeToFind.getId()+" already belong to a devis");

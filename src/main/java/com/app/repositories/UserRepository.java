@@ -10,4 +10,5 @@ import com.app.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
+    User findByName(String userName);
 }
