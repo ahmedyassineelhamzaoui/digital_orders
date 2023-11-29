@@ -25,10 +25,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Builder
+@Data
 public class EquipmentDTO {
-	    
-	@Autowired 
-	private CategoryServiceImpl categoryServiceImpl;
 
 	    @NotBlank(message = "Registration number is required")
 	    @Column(unique=true)
@@ -44,10 +42,10 @@ public class EquipmentDTO {
 
 	    @NotNull(message ="Status is required")
 	    private EquipmentStatus equipmentStatus;
-	    
-	   
+
+
 	    private String category;
-	    
+
 	    private MultipartFile image;
 	    
 	    public Equipment toEntity() {
@@ -55,6 +53,7 @@ public class EquipmentDTO {
 	    			.name(name)
 	    			.registrationNumber(registrationNumber)
 	    			.rentalPrice(rentalPrice)
+	    			.image(image.getOriginalFilename())
 	    			.build();
 	    }
 

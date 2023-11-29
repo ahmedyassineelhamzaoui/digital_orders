@@ -1,10 +1,14 @@
 package com.app.controllers;
+
 import com.app.models.Contract;
 import com.app.services.impl.ContractServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import com.app.utils.ContractGenerator;
 import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,8 +32,8 @@ public class ContractController {
     public ContractServiceImpl contractServiceImpl;
 
     @GetMapping("/contracts")
-    public ResponseEntity<List<Contract>> getAllContracts() {
-        List<Contract> contracts = contractServiceImpl.getAllContracts();
+    public ResponseEntity<List<Contract>> getAllContracts(){
+           List<Contract> contracts= contractServiceImpl.getAllContracts();
         return new ResponseEntity<>(contracts, HttpStatus.OK);
     }
 
@@ -68,8 +72,8 @@ public class ContractController {
     public ResponseEntity<String> archiveContract(@PathVariable UUID contractId) {
         contractServiceImpl.archiveContract(contractId);
         return new ResponseEntity<>("Contract archived successfully", HttpStatus.OK);
-
     }
+
 
     @GetMapping("/export-to-pdf")
     public void generatePdfFile(HttpServletResponse response) throws DocumentException, IOException, IOException {
@@ -80,7 +84,9 @@ public class ContractController {
         String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
         response.setHeader(headerkey, headervalue);
 
+
         ContractGenerator pdfcontract = new ContractGenerator();
         pdfcontract.generate(response);
+
     }
 }
