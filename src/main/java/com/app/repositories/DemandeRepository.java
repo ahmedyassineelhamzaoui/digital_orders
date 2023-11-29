@@ -1,10 +1,10 @@
 package com.app.repositories;
 
-import com.app.models.Demande;
-import com.app.models.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import com.app.models.Demande;
+import com.app.models.User;
 import java.util.UUID;
 
 @Repository

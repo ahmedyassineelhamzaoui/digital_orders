@@ -20,7 +20,6 @@ public class UserDTO {
 	@Size(max=255,message="email must be at most 255 characters")
 	private String email;
 
-	@NotNull(message="role is required")
 	private Role role;
 	
 	public User mapToEntity() {

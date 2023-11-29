@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import com.app.utils.ContractGenerator;
-import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.RestController;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,7 +58,7 @@ public class ContractController {
 
 
     @GetMapping("/export-to-pdf")
-    public void generatePdfFile(HttpServletResponse response) throws DocumentException, IOException, IOException {
+    public void generatePdfFile(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
         String currentDateTime = dateFormat.format(new Date());

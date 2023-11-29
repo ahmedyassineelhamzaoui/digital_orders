@@ -1,13 +1,16 @@
 package com.app.models;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.app.dto.DemandeDTO;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,13 +28,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="demandes")
 @Builder
+@Table(name="demandes")
 public class Demande {
 
-	@Id
+  @Id
   @GeneratedValue(generator = "uuid2")
-	private UUID id;
+  private UUID id;
 	
   @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
@@ -39,27 +42,30 @@ public class Demande {
   @NotNull(message ="user is required")
   @ManyToOne
   @JoinColumn(name ="user_id")
-	private User user;
+  private User user;
     
+
   @NotNull(message ="equipment to be rented is required")
   @ManyToOne
   @JoinColumn(name="equipment_id")
   private Equipment equipment;
     
   @NotNull(message ="start date is required")
-	@Future(message = "Start date must be in the future")
-	private Date startDate;
+  @Future(message = "Start date must be in the future")
+  private Date startDate;
 	
-	@Future(message = "End date must be in the future")
-	@NotNull(message ="End date is required")
-	private Date endDate;
+  @Future(message = "End date must be in the future")
+  @NotNull(message ="End date is required")
+  private Date endDate;
 	
-	private Double demandeCost;
+  private Double demandeCost;
 	
-	@ManyToOne
-	@JsonIgnore
-	@JoinColumn(name = "devis_id")
-	private Devis devis;
+  @JsonBackReference
+  @ManyToOne
+  @JsonIgnore
+  @JoinColumn(name = "devis_id")
+  private Devis devis;
+
 
 //	public DemandeDTO maptoDto() {
 //		return DemandeDTO.builder()
