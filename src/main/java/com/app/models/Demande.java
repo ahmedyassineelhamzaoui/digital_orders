@@ -6,6 +6,7 @@ import com.app.dto.DemandeDTO;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,25 +30,23 @@ import lombok.NoArgsConstructor;
 public class Demande {
 
 	@Id
-    @GeneratedValue(generator = "uuid2")
+  @GeneratedValue(generator = "uuid2")
 	private UUID id;
 	
-    @NotNull(message ="Status is required")
+  @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
     
-    @NotNull(message ="user is required")
-    @ManyToOne
-    @JoinColumn(name ="user_id")
+  @NotNull(message ="user is required")
+  @ManyToOne
+  @JoinColumn(name ="user_id")
 	private User user;
     
-    @NotNull(message ="equipment to be rented is required")
-    @ManyToOne
-    @JoinColumn(name="equipment_id")
-    @JoinColumn(name="equipment_id")
-
-    private Equipment equipment;
+  @NotNull(message ="equipment to be rented is required")
+  @ManyToOne
+  @JoinColumn(name="equipment_id")
+  private Equipment equipment;
     
-    @NotNull(message ="start date is required")
+  @NotNull(message ="start date is required")
 	@Future(message = "Start date must be in the future")
 	private Date startDate;
 	
@@ -58,6 +57,7 @@ public class Demande {
 	private Double demandeCost;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
 
