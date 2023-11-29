@@ -21,16 +21,16 @@ public class DemandeController {
         @Autowired
         private DemandeServiceImpl demandeServiceImpl ;
 
-//        @PostMapping("/demande")
-//        public Demande createDemand(@RequestBody DemandeDTO demandeDto){
-//            return demandeServiceImpl.createDemand(demandeDto);
-//        }
-
         @PostMapping("/demande")
-        public ResponseEntity<Map<String,Object>> createDemand(@RequestBody DemandeDTO demandeDto){
-            Demande demande=demandeDto.mapToDemandeEntity();
+        public ResponseEntity<Map<String,Object>>  createDemand(@RequestBody Demande demande){
             return demandeServiceImpl.createDemand(demande);
         }
+
+//        @PostMapping("/demande")
+//        public ResponseEntity<Map<String,Object>> createDemand(@RequestBody DemandeDTO demandeDto){
+//            Demande demande=demandeDto.mapToDemandeEntity();
+//            return demandeServiceImpl.createDemand(demande);
+//        }
         @GetMapping("/demandes")
         public List<DemandeDTO> getAllDemandes(){
                 List<Demande> demandeList =demandeServiceImpl.getAllDemandes();

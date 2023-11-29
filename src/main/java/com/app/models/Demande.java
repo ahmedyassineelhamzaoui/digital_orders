@@ -7,13 +7,7 @@ import com.app.dto.DemandeDTO;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -37,12 +31,12 @@ public class Demande {
 	private DemandeStatus demandeStatus;
     
     @NotNull(message ="user is required")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="user_id")
 	private User user;
     
     @NotNull(message ="equipment to be rented is required")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="equipment_id")
     private Equipment equipment;
     

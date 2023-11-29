@@ -27,30 +27,21 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public ResponseEntity<Map<String,Object>> createDemand(Demande demande) {
         Map<String,Object> response = new HashMap<String, Object>();
-//        User user = userServiceImpl.findUser(demande.getUser().getId()).orElseThrow(()->new NoSuchElementException("this user doesn't exist"));
-//        Equipment equipment = equipmentServiceImpl.getEquipmentById(demande.getEquipment().getId()).orElseThrow(()->new RuntimeException("this equipment doesn't exist"));
+        User user = userServiceImpl.findUser(demande.getUser().getId()).orElseThrow(()->new NoSuchElementException("this user doesn't exist"));
+        Equipment equipment = equipmentServiceImpl.getEquipmentById(demande.getEquipment().getId()).orElseThrow(()->new NoSuchElementException("this equipment doesn't exist"));
 //        if(!allreadyReserved(demande.getEquipment().getId() , demande.getStartDate() ,demande.getEndDate()).isEmpty()){
 //            response.put("status", "error");
 //            response.put("message", "this Equipment is already reserved");
 //            return ResponseEntity.badRequest().body(response);
 //        }
+        demande.setEquipment(equipment);
+        demande.setUser(user);
         DemandeDTO demandeDTO =demandeRepository.save(demande).mapToDemandeDTO();
         response.put("status", "success");
         response.put("message", "your demande is created successfuly ");
         response.put("demande",demandeDTO);
         return ResponseEntity.ok(response);
 
-
-//        User user = equipmentServiceImpl.findUserByName(demandeDto.getUser());
-//        Demande demande = Demande.builder()
-//                .demandeStatus(demandeRepository.findByStatus())
-//                .user(user)
-//                .equipment(equipment)
-//                .startDate(startDate)
-//                .endDate(endDate)
-//                .demandeCost(demandeCost).build();
-//        return demandeRepository.save(demande);
-//        return null;
     }
 
     private List<Demande> allreadyReserved(UUID equipmentnId, Date startDate, Date endDate) {
