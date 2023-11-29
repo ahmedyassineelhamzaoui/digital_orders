@@ -18,5 +18,5 @@ public interface UserService {
 	
 	Optional<User> findUser(UUID id);
 
-    User findUserByName(String user);
+
 }

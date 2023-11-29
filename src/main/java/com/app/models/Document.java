@@ -1,5 +1,7 @@
 package com.app.models;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class Document {
 
 	@Id
     @GeneratedValue(generator = "uuid2")
-	private Long id;
+	private UUID id;
 	
 	@OneToOne
 	@JoinColumn(name ="contract_id")

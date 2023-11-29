@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +29,17 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
+	@GetMapping("/users")
+	public ResponseEntity<Map<String, Object>> findAllUsers() {
+        Map<String, Object> response = new HashMap<>();
+        
+         List<User> users = userService.getAllUsers();
+		
+        response.put("status", "success");
+        response.put("message", "all users");
+        response.put("users",users );
+        return ResponseEntity.ok(response);
+	}
 	@PostMapping("/users")
     public ResponseEntity<Map<String, Object>> addUser(@RequestBody @Valid UserDTO user) {
         Map<String, Object> response = new HashMap<>();

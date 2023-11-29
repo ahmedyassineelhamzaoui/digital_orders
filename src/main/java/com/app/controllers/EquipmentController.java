@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
+import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,46 +59,49 @@ public class EquipmentController {
 		
 	}
 
-	@PostMapping("/equipment")
+	@PostMapping(value={"/equipment"} ,consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<Map<String,Object>> addEquipment(@Valid EquipmentDTO myequipment,
 			@RequestParam("registrationNumber") String registrationNumber,
 			@RequestParam("rentalPrice")        Double rentalPrice,
 			@RequestParam("name")               String name,
 			@RequestParam("equipmentStatus")    String equipmentStatus,
 			@RequestParam("category")           String category,
-			@RequestParam("image") MultipartFile image)
+			@RequestPart("image") MultipartFile image)
 			{
 		Map<String,Object> response = new HashMap<String, Object>();
 		
 		
 	    Equipment equipment = new Equipment();
 		try {
-			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-	         
-	        String filecode = FileUploadUtil.saveFile(fileName, image);
-	        
-	        if(category.trim().equals("")) {
+			if(category.trim().equals("")) {
 	        	equipment.setCategory(null);
 			}else {
 		        Optional<Category> categoryToFind = categoryServiceImpl.getCategoryById(UUID.fromString(category));
 	        	equipment.setCategory(categoryToFind.get());
 			}
+			
+			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+	         
+	        String filecode = FileUploadUtil.saveFile(fileName, image);
+	        
+	        
 	        
 		    equipment.setRegistrationNumber(registrationNumber);
 		    equipment.setRentalPrice(rentalPrice);
 		    equipment.setName(name);
 		    equipment.setEquipmentStatus(EquipmentStatus.valueOf(equipmentStatus));
 	        equipment.setImage(filecode+"_"+fileName);
-	        
+	        response.put("status","success");
+			response.put("equipment", equipmentServiceImpl.addEquipment(equipment));
+			return ResponseEntity.ok(response);
+			
 		}catch(Exception e) {
 			response.put("status", "error");
 			response.put("message", e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
         
-		response.put("status","success");
-		response.put("equipment", equipmentServiceImpl.addEquipment(equipment));
-		return ResponseEntity.ok(response);
+		
 	}
 	
 	
