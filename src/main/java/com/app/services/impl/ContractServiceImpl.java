@@ -17,7 +17,10 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public List<Contract> getAllContracts(){return contractRepository.findAll();}
-
+    @Override
+    public Optional<Contract> getContractById(UUID id) {
+        return contractRepository.findById(id);
+    }
     public Contract saveContract(Contract contract) {
         return contractRepository.save(contract);
     }

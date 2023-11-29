@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +21,18 @@ public class ContractController {
     public ResponseEntity<List<Contract>> getAllContracts(){
            List<Contract> contracts= contractServiceImpl.getAllContracts();
         return new ResponseEntity<>(contracts, HttpStatus.OK);
+    }
+
+    @GetMapping("/contracts/{id}")
+    public ResponseEntity<Contract> getContractById(@PathVariable UUID id) {
+
+        Optional<Contract> contract = contractServiceImpl.getContractById(id);
+
+        if (contract.isPresent()) {
+            return ResponseEntity.ok(contract.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
