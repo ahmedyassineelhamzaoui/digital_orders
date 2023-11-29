@@ -6,8 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.app.utils.ContractGenerator;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
 
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,4 +60,19 @@ public class ContractController {
         contractServiceImpl.archiveContract(contractId);
         return new ResponseEntity<>("Contract archived successfully", HttpStatus.OK);
     }
-}
+
+    @GetMapping("/export-to-pdf")
+        public void generatePdfFile (HttpServletResponse response) throws DocumentException, IOException, IOException {
+            response.setContentType("application/pdf");
+            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+            String currentDateTime = dateFormat.format(new Date());
+            String headerkey = "Content-Disposition";
+            String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
+            response.setHeader(headerkey, headervalue);
+
+
+            ContractGenerator pdfcontract = new ContractGenerator();
+            pdfcontract.generate(response);
+        }
+
+    }

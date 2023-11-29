@@ -1,7 +1,10 @@
 package com.app.models;
 
 import java.util.Date;
+import java.util.UUID;
 
+import com.app.dto.DemandeDTO;
+import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +27,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="demandes")
+@Builder
 public class Demande {
 
 	@Id
     @GeneratedValue(generator = "uuid2")
-	private Long id;
+	private UUID id;
 	
     @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
@@ -56,4 +61,15 @@ public class Demande {
 	@JsonIgnore
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
+
+//	public DemandeDTO maptoDto() {
+//		return DemandeDTO.builder()
+//				.demandeStatus(demandeStatus.name())
+//				.user(user.getName())
+//				.equipment(equipment)
+//				.startDate(startDate)
+//				.endDate(endDate)
+//				.demandeCost(demandeCost).build();
+//
+//	}
 }
