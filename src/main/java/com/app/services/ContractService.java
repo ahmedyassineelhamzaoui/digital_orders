@@ -13,6 +13,8 @@ public interface ContractService {
     Optional<Contract> getContractById(UUID id);
 
     Contract saveContract(Contract contract);
+
+//    Contract saveContractwithCheck(Contract contract,Long devisId);
     void archiveContract(UUID contractId);
 
 }

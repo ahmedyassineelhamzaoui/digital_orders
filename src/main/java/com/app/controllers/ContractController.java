@@ -42,6 +42,8 @@ public class ContractController {
         return new ResponseEntity<>(savedContract, HttpStatus.CREATED);
     }
 
+
+
     @PostMapping("/archive-contract/{contractId}")
     public ResponseEntity<String> archiveContract(@PathVariable UUID contractId) {
         contractServiceImpl.archiveContract(contractId);
