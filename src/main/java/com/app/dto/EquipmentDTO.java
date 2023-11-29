@@ -25,6 +25,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Builder
+@Data
 public class EquipmentDTO {
 
 	    @NotBlank(message = "Registration number is required")
@@ -41,10 +42,10 @@ public class EquipmentDTO {
 
 	    @NotNull(message ="Status is required")
 	    private EquipmentStatus equipmentStatus;
-	    
-	   
+
+
 	    private String category;
-	    
+
 	    private MultipartFile image;
 	    
 	    public Equipment toEntity() {

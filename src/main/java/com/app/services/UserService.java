@@ -17,4 +17,6 @@ public interface UserService {
 	void deleteUser(UUID id);
 	
 	Optional<User> findUser(UUID id);
+
+
 }

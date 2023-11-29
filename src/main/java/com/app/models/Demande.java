@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.app.dto.DemandeDTO;
+import com.app.dto.DemandeDTO2;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -39,16 +41,17 @@ public class Demande {
   @NotNull(message ="Status is required")
 	private DemandeStatus demandeStatus;
     
-  @NotNull(message ="user is required")
-  @ManyToOne
-  @JoinColumn(name ="user_id")
-  private User user;
-    
 
-  @NotNull(message ="equipment to be rented is required")
-  @ManyToOne
-  @JoinColumn(name="equipment_id")
-  private Equipment equipment;
+    @NotNull(message ="user is required")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name ="user_id")
+	private User user;
+    
+    @NotNull(message ="equipment to be rented is required")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="equipment_id")
+    private Equipment equipment;
+
     
   @NotNull(message ="start date is required")
   @Future(message = "Start date must be in the future")
@@ -67,14 +70,20 @@ public class Demande {
   private Devis devis;
 
 
-//	public DemandeDTO maptoDto() {
-//		return DemandeDTO.builder()
-//				.demandeStatus(demandeStatus.name())
-//				.user(user.getName())
-//				.equipment(equipment)
-//				.startDate(startDate)
-//				.endDate(endDate)
-//				.demandeCost(demandeCost).build();
-//
-//	}
+	public DemandeDTO mapToDemandeDTO(){
+		return DemandeDTO.builder()
+				.demandeStatus(demandeStatus)
+				.user(user.maptoDto())
+				.equipment(equipment.toDto())
+				.startDate(startDate)
+				.endDate(endDate)
+				.demandeCost(demandeCost)
+				.build();
+	}
+	public DemandeDTO2 mapToDemandeDTO2(){
+		return DemandeDTO2.builder()
+				.startDate(startDate)
+				.endDate(endDate)
+				.build();
+	}
 }
