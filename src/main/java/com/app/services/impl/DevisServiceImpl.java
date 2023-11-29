@@ -15,6 +15,7 @@ import com.app.models.Demande;
 import com.app.models.Devis;
 import com.app.models.User;
 import com.app.models.enums.DemandeStatus;
+import com.app.models.enums.DevisStatus;
 import com.app.repositories.DevisRepository;
 import com.app.services.DevisService;
 
@@ -73,9 +74,20 @@ public class DevisServiceImpl implements DevisService {
 	}
 
 	@Override
-	public Devis updateDevis(Devis devis) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<Map<String,Object>> updateDevis(UUID id ,String status) {
+		Map<String,Object> response = new HashMap<String, Object>();
+		Optional<Devis> devisToFind = getDevisById(id);
+		if(devisToFind.isEmpty()) {
+			response.put("status", "error");
+			response.put("message","devis width id:'"+id+"' not found");
+			return ResponseEntity.badRequest().body(response);
+		}
+		DevisStatus devisStatus = DevisStatus.valueOf(status); 
+		devisToFind.get().setDevisStatus(devisStatus);
+		response.put("status", "success");
+		response.put("message","status of devis has been updated successfuly");
+		response.put("devis", devisToFind);
+		return ResponseEntity.ok(response);
 	}
 
 	@Override
@@ -85,17 +97,12 @@ public class DevisServiceImpl implements DevisService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String,Object>> getDevisById(UUID id) {
-		Map<String,Object> response = new HashMap<String, Object>();
+	public Optional<Devis> getDevisById(UUID id) {
 		Optional<Devis> devisToFind = devisRepository.findById(id);
-		if(devisToFind.isEmpty()) {
-			response.put("status", "error");
-			response.put("message", "devis width id: '"+id+"' not found");
-			return ResponseEntity.badRequest().body(response);
+		if(!devisToFind.isEmpty()) {
+			return devisToFind;
 		}
-		response.put("status", "success");
-		response.put("devis", devisToFind.get());
-		return ResponseEntity.badRequest().body(response);
+		return null;
 	}
 	
 	
