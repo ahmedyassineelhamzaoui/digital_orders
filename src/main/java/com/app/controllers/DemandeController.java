@@ -3,13 +3,10 @@ package com.app.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,37 +19,44 @@ import com.app.services.impl.CategoryServiceImpl;
 import com.app.services.impl.DemandeServiceImpl;
 
 import jakarta.validation.Valid;
+import com.app.dto.DemandeDTO;
+import com.app.models.Demande;
+import com.app.services.impl.DemandeServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class DemandeController {
+	
+        @Autowired
+        private DemandeServiceImpl demandeServiceImpl ;
 
-	@Autowired
-	private DemandeServiceImpl demandeServiceImpl; 
-	
-	@GetMapping("/demandes")
-	public ResponseEntity<Map<String,Object>> getAllDemandes(){
-		Map<String,Object> response = new HashMap<String, Object>();
-		List<Demande> demandes = demandeServiceImpl.getAllDemandes();
-		response.put("status", "success");
-        response.put("message", "category added successfuly");
-        response.put("Demandes",demandes );
-        return ResponseEntity.ok(response);
-	}
-	@PostMapping("/demandes")
-	public ResponseEntity<Map<String,Object>> addCategory(@RequestBody Demande demande){
-		Map<String,Object> response = new HashMap<String, Object>();
-	
-	    try {
-		    Demande demandeToAdd = demandeServiceImpl.addDemande(demande);
-            response.put("status", "success");
-            response.put("message", "category added successfuly");
-            response.put("Demande", demandeToAdd);
-            return ResponseEntity.ok(response);
-	    }catch(DataIntegrityViolationException e) {
-	    	response.put("status", "error");
-	    	response.put("message", e.getMessage());
-	    	return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-	    }
-	}
+        @PostMapping("/demande")
+        public DemandeDTO createDemand(@RequestBody DemandeDTO demande){
+            return demandeServiceImpl.createDemand(demande);
+        }
+
+
+        @GetMapping("/demandes")
+        public List<DemandeDTO> getAllDemandes(){
+                List<Demande> demandeList =demandeServiceImpl.getAllDemandes();
+               return demandeList.stream().map(
+                        demande -> new DemandeDTO(demande.getDemandeStatus().name(),
+                                demande.getUser().getName(),
+                                demande.getEquipment(),
+                                demande.getStartDate(),
+                                demande.getEndDate(),
+                                demande.getDemandeCost())
+                ).collect(Collectors.toList());
+        }
+
+        @DeleteMapping("/deleteDemande/{id}")
+        public void deleteDemande(@PathVariable UUID id){
+            demandeServiceImpl.deleteDemande(id);
+        }
 }
