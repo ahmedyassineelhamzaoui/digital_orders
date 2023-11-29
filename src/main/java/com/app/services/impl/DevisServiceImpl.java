@@ -33,39 +33,44 @@ public class DevisServiceImpl implements DevisService {
 	}
 
 	@Override
-		public ResponseEntity<Map<String,Object>> addDevis(Devis devis) {
-			Map<String,Object> response = new HashMap<String, Object>();
-			List<Demande> mydemandes = new ArrayList<>();
-			for(Demande d:devis.getDemandes()) {
-				Demande demandeToFind = demandeServiceImpl.getDemandeById(d.getId()).get();
-				if(demandeToFind.getDevis() != null) {
-					response.put("status", "error");
-					response.put("message", "demande that has the id "+demandeToFind.getId()+" already belong to a devis");
-			    	return ResponseEntity.badRequest().body(response);
-				}
-				if(demandeToFind.getDemandeStatus() == DemandeStatus.ACCEPTED) {
-				    if(demandeServiceImpl.getDemandeById(devis.getDemandes().get(0).getId()).get().getUser() != demandeToFind.getUser()) {				    
-				    	response.put("status", "error");
-						response.put("message","All demandes must for the same user");
-						return ResponseEntity.badRequest().body(response);
-				    }
-				    mydemandes.add(demandeToFind);
-				}else {
-					response.put("status", "error");
-					response.put("message","All Demandes status must be accepted ");
-					return ResponseEntity.badRequest().body(response);
-				}
-	        }
-			Devis devisSaved = devisRepository.save(devis);
-			for(Demande d:mydemandes) {
-				Demande demande = demandeServiceImpl.getDemandeById(d.getId()).get();
-	        	demande.setDevis(devisSaved);	
-	        	demandeServiceImpl.updateDemande(d.getId(), demande);
+	public ResponseEntity<Map<String,Object>> addDevis(Devis devis) {
+		Map<String,Object> response = new HashMap<String, Object>();
+		List<Demande> mydemandes = new ArrayList<>();
+		for(Demande d:devis.getDemandes()) {
+			Demande demandeToFind = demandeServiceImpl.getDemandeById(d.getId()).get();
+			if(demandeToFind == null) {
+				response.put("status", "error");
+				response.put("message", "demande that has the id "+demandeToFind.getId()+" not exist");
+		    	return ResponseEntity.badRequest().body(response);
 			}
-			response.put("status", "success");
-			response.put("message", "devis added successfuly");
-	    	return ResponseEntity.ok(response);
+			if(demandeToFind.getDevis() != null) {
+				response.put("status", "error");
+				response.put("message", "demande that has the id "+demandeToFind.getId()+" already belong to a devis");
+		    	return ResponseEntity.badRequest().body(response);
+			}
+			if(demandeToFind.getDemandeStatus() == DemandeStatus.ACCEPTED) {
+			    if(demandeServiceImpl.getDemandeById(devis.getDemandes().get(0).getId()).get().getUser() != demandeToFind.getUser()) {				    
+			    	response.put("status", "error");
+					response.put("message","All demandes must for the same user");
+					return ResponseEntity.badRequest().body(response);
+			    }
+			    mydemandes.add(demandeToFind);
+			}else {
+				response.put("status", "error");
+				response.put("message","All Demandes status must be accepted ");
+				return ResponseEntity.badRequest().body(response);
+			}
+        }
+		Devis devisSaved = devisRepository.save(devis);
+		for(Demande d:mydemandes) {
+			Demande demande = demandeServiceImpl.getDemandeById(d.getId()).get();
+        	demande.setDevis(devisSaved);	
+        	demandeServiceImpl.updateDemande(d.getId(), demande);
 		}
+		response.put("status", "success");
+		response.put("message", "devis added successfuly");
+    	return ResponseEntity.ok(response);
+	}
 
 	@Override
 	public Devis updateDevis(Devis devis) {

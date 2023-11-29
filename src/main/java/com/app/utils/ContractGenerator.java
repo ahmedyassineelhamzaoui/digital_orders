@@ -1,22 +1,30 @@
 package com.app.utils;
 
-import com.app.models.*;
-import com.app.models.enums.DemandeStatus;
-import com.app.models.enums.DevisStatus;
-import com.lowagie.text.Document;
-import jakarta.servlet.http.HttpServletResponse;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.CMYKColor;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import com.app.models.Category;
+import com.app.models.Contract;
+import com.app.models.Demande;
+import com.app.models.Devis;
+import com.app.models.Equipment;
+import com.app.models.enums.DemandeStatus;
+import com.app.models.enums.DevisStatus;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.CMYKColor;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ContractGenerator {
 
@@ -163,8 +171,7 @@ public class ContractGenerator {
         img.setAlignment(Element.ALIGN_RIGHT);
         img.scaleAbsolute(100, 50); // Set image width and height as needed
         document.add(img);
-        // Close the document
-        // Closing the document
+
         document.close();
     }
 

@@ -16,7 +16,7 @@ public interface DemandeService {
     public ResponseEntity<Map<String,Object>> createDemand(Demande demande);
     public List<Demande> getAllDemandes();
     public void deleteDemande(UUID id);
-    public Demande updateDemande(UUID demandId , Demande demande);
+    public void updateDemande(UUID demandId , Demande demande);
     public Optional<Demande> getDemandeById(UUID id);
 
 

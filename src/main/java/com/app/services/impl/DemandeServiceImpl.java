@@ -65,8 +65,11 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
-    public Demande updateDemande(UUID demandId, Demande demande) {
-        return null;
+    public void updateDemande(UUID id, Demande updatedDemande) {
+        Optional<Demande> existingDemande = demandeRepository.findById(id);
+        if (existingDemande.isEmpty()) {
+            demandeRepository.save(existingDemande.get());
+        }
     }
 
     @Override
