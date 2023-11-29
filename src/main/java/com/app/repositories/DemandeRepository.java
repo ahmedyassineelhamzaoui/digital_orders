@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface DemandeRepository extends JpaRepository<Demande, UUID> {
-    User getUserByName(String user);
+
 }
