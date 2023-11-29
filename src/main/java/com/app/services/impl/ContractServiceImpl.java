@@ -32,10 +32,25 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
+    public Contract saveContractwithcheck(Contract contract,UUID devisId) {
+        Optional<Devis> devisOptional = devisRepository.findById(devisId);
+        if (devisOptional.isPresent()) {
+            Devis devis = devisOptional.get();
 
 
+            if (devis.getDevisStatus() == DevisStatus.ACCEPTED) {
+                contract.setDevis(devis);
 
-    // Method to archive a contract by ID
+            return contractRepository.save(contract);
+            }else {
+            throw new IllegalStateException("Cannot save contract for Devis with status: " + devis.getDevisStatus());
+            }
+        }else {
+        throw new IllegalArgumentException("Devis with ID " + devisId + " not found");
+            }
+
+    }
+
     public void archiveContract(UUID contractId) {
         Optional<Contract> optionalContract = contractRepository.findById(contractId);
 

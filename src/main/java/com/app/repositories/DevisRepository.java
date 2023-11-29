@@ -8,5 +8,5 @@ import com.app.models.Devis;
 @Repository
 public interface DevisRepository extends JpaRepository<Devis, UUID> {
 
-}
+    }
 
