@@ -60,13 +60,14 @@ public class Demande {
 	@JoinColumn(name = "devis_id")
 	private Devis devis;
 
-	public Demande maptoDEntity() {
-		return Demande.builder()
+	public DemandeDTO mapToDemandeDTO(){
+		return DemandeDTO.builder()
 				.demandeStatus(demandeStatus)
-				.user(user)
-				.equipment(equipment)
+				.user(user.maptoDto())
+				.equipment(equipment.toDto())
 				.startDate(startDate)
 				.endDate(endDate)
-				.demandeCost(demandeCost).build();
+				.demandeCost(demandeCost)
+				.build();
 	}
 }

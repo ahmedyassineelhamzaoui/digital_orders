@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.app.dto.DemandeDTO.mapDemandetoDto;
+//import static com.app.dto.DemandeDTO.mapDemandetoDto;
+//import static com.app.models.Demande.maptoDemandEntity;
 
 @RestController
 @RequestMapping("/api")
@@ -26,14 +27,15 @@ public class DemandeController {
 //        }
 
         @PostMapping("/demande")
-        public ResponseEntity<Map<String,Object>> createDemand(@RequestBody Demande demande){
+        public ResponseEntity<Map<String,Object>> createDemand(@RequestBody DemandeDTO demandeDto){
+            Demande demande=demandeDto.mapToDemandeEntity();
             return demandeServiceImpl.createDemand(demande);
         }
         @GetMapping("/demandes")
         public List<DemandeDTO> getAllDemandes(){
                 List<Demande> demandeList =demandeServiceImpl.getAllDemandes();
                return demandeList.stream().map(
-                        demande -> mapDemandetoDto(demande)
+                        demande -> demande.mapToDemandeDTO()
                 ).collect(Collectors.toList());
         }
 

@@ -1,5 +1,6 @@
 package com.app.dto;
 
+import lombok.Data;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
 import com.app.models.User;
 import jakarta.validation.constraints.Email;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 @Builder
+@Data
 public class UserDTO {
 
 	@NotBlank(message="Name is required")
