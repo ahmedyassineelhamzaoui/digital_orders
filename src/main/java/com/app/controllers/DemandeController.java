@@ -3,6 +3,8 @@ package com.app.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.app.models.enums.DemandeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -31,9 +33,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
+
 @RestController
 @RequestMapping("/api")
 public class DemandeController {
+	
         @Autowired
         private DemandeServiceImpl demandeServiceImpl ;
 
@@ -52,12 +57,16 @@ public class DemandeController {
         }
 
         @DeleteMapping("/deleteDemande/{id}")
-        public void deleteDemande(@PathVariable UUID id){
-            demandeServiceImpl.deleteDemande(id);
+        public ResponseEntity<Map<String,Object>> deleteDemande(@PathVariable UUID id){
+            return demandeServiceImpl.deleteDemande(id);
         }
 
-        @PutMapping("/updateDemande/{id}")
-        public DemandeDTO updateDemande(@PathVariable UUID demandeId , @RequestBody DemandeDTO demandeDTO){
+        @PutMapping("/updateDemande/{demandeId}")
+        public ResponseEntity<Map<String,Object>> updateDemande(@PathVariable UUID demandeId, @RequestBody Demande demande){
             return null;
+        }
+        @PutMapping("/updateDemandeStatus/{demandeid}")
+        public ResponseEntity<Map<String , String>> updateDemandeStatus(@PathVariable UUID demandeId , @RequestBody DemandeStatus demandeStatus){
+            return demandeServiceImpl.updateDemandeStatus(demandeId , demandeStatus);
         }
 }

@@ -22,14 +22,12 @@ public class DemandeDTO {
     private EquipmentDTO equipment ;
     private Date startDate;
     private Date endDate ;
-    private Double demandeCost;
 	public Demande mapToDemandeEntity(){
 		return Demande.builder().demandeStatus(demandeStatus)
 				.user(user.mapToEntity())
 				.equipment(equipment.toEntity())
 				.startDate(startDate)
 				.endDate(endDate)
-				.demandeCost(demandeCost)
 				.build();
 	}
 
