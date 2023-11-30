@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.DevisDTO;
 import com.app.models.Demande;
@@ -34,7 +36,9 @@ public class DevisController {
 	
 	@PostMapping("/devis")
     public ResponseEntity<Map<String, Object>> addDevis(@Valid @RequestBody DevisDTO devisDto) {
-        return devisService.addDevis(devisDto.MapToDevis());
+		return devisService.addDevis(devisDto.MapToDevis());
+
+
     }
 	@GetMapping("/devis")
 	public ResponseEntity<List<Devis>> getAllDevis(){
@@ -43,7 +47,25 @@ public class DevisController {
 	}
 	@GetMapping("/devis/{id}")
 	public ResponseEntity<Map<String,Object>> getDevisById(@PathVariable UUID id){
-		return devisService.getDevisById(id);
+		Map<String,Object> response = new HashMap<String, Object>();
+		Optional<Devis> devis = devisService.getDevisById(id);
+		if(devis == null) {
+			response.put("status", "error");
+			response.put("message","devis not found");
+			return ResponseEntity.badRequest().body(response);
+		}
+		response.put("status", "success");
+		response.put("devis", devis.get());
+		return ResponseEntity.ok(response);
 	}
-	
+	@PutMapping("/devis/{id}")
+	public ResponseEntity<Map<String,Object>> editDevisStatus(@PathVariable UUID id,@RequestParam(value = "status", required = false)  String status){
+		if (status == null) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("status", "error");
+	        response.put("message", "Missing 'status' parameter in form data");
+	        return ResponseEntity.badRequest().body(response);
+	    }
+		return devisService.updateDevis(id,status);
+	}
 }
