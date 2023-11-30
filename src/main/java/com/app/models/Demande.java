@@ -65,7 +65,6 @@ public class Demande {
 	
   @JsonBackReference
   @ManyToOne
-  @JsonIgnore
   @JoinColumn(name = "devis_id")
   private Devis devis;
 
@@ -77,7 +76,6 @@ public class Demande {
 				.equipment(equipment.toDto())
 				.startDate(startDate)
 				.endDate(endDate)
-				.demandeCost(demandeCost)
 				.build();
 	}
 	public DemandeDTO2 mapToDemandeDTO2(){

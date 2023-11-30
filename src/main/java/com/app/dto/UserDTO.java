@@ -22,13 +22,12 @@ public class UserDTO {
 	@Size(max=255,message="email must be at most 255 characters")
 	private String email;
 
-	private Role role;
+
 	
 	public User mapToEntity() {
 		return User.builder()
 				.name(name)
 				.email(email)
-				.role(role)
 				.build();
 	}
 }

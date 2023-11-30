@@ -3,36 +3,25 @@ package com.app.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.app.models.enums.DemandeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.app.models.Category;
 import com.app.models.Demande;
 import com.app.services.impl.CategoryServiceImpl;
 import com.app.services.impl.DemandeServiceImpl;
-
 import jakarta.validation.Valid;
 import com.app.dto.DemandeDTO;
-import com.app.models.Demande;
-import com.app.services.impl.DemandeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//import static com.app.dto.DemandeDTO.mapDemandetoDto;
-//import static com.app.models.Demande.maptoDemandEntity;
+
 
 @RestController
 @RequestMapping("/api")
@@ -46,11 +35,6 @@ public class DemandeController {
             return demandeServiceImpl.createDemand(demande);
         }
 
-//        @PostMapping("/demande")
-//        public ResponseEntity<Map<String,Object>> createDemand(@RequestBody DemandeDTO demandeDto){
-//            Demande demande=demandeDto.mapToDemandeEntity();
-//            return demandeServiceImpl.createDemand(demande);
-//        }
         @GetMapping("/demandes")
         public List<DemandeDTO> getAllDemandes(){
                 List<Demande> demandeList =demandeServiceImpl.getAllDemandes();
@@ -60,12 +44,16 @@ public class DemandeController {
         }
 
         @DeleteMapping("/deleteDemande/{id}")
-        public void deleteDemande(@PathVariable UUID id){
-            demandeServiceImpl.deleteDemande(id);
+        public ResponseEntity<Map<String,Object>> deleteDemande(@PathVariable UUID id){
+            return demandeServiceImpl.deleteDemande(id);
         }
 
-        @PutMapping("/updateDemande/{id}")
-        public DemandeDTO updateDemande(@PathVariable UUID demandeId , @RequestBody DemandeDTO demandeDTO){
+        @PutMapping("/updateDemande/{demandeId}")
+        public ResponseEntity<Map<String,Object>> updateDemande(@PathVariable UUID demandeId, @RequestBody Demande demande){
             return null;
+        }
+        @PutMapping("/updateDemandeStatus/{demandeid}")
+        public ResponseEntity<Map<String , String>> updateDemandeStatus(@PathVariable UUID demandeId , @RequestBody DemandeStatus demandeStatus){
+            return demandeServiceImpl.updateDemandeStatus(demandeId , demandeStatus);
         }
 }
