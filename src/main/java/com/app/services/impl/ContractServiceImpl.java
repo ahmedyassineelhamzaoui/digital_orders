@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.ValidationException;
 import java.util.*;
 
 @Service
@@ -24,8 +25,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> getAllContracts(){return contractRepository.findAll();}
     @Override
-    public Optional<Contract> getContractById(UUID id) {
-        return contractRepository.findById(id);
+    public Optional<ContractDTO> getContractById(UUID id) {
+
+        Optional<Contract> contract = contractRepository.findById(id);
+
+        return contract.map(Contract::mapToDto);
     }
     public Contract saveContract(Contract contract) {
 
@@ -36,19 +40,29 @@ public class ContractServiceImpl implements ContractService {
         Optional<Devis> devisOptional = devisRepository.findById(devisId);
         if (devisOptional.isPresent()) {
             Devis devis = devisOptional.get();
-
-
             if (devis.getDevisStatus() == DevisStatus.ACCEPTED) {
                 contract.setDevis(devis);
 
-            return contractRepository.save(contract);
+                if (isValidContractDates(contract)) {
+                    return contractRepository.save(contract);
+                } else {
+                    throw new NoSuchElementException("Contract date must be before end date");
+                }
+
+//            return contractRepository.save(contract);
             }else {
-            throw new IllegalStateException("Cannot save contract for Devis with status: " + devis.getDevisStatus());
+            throw new NoSuchElementException("Cannot save contract for Devis with status: " + devis.getDevisStatus());
             }
         }else {
-        throw new IllegalArgumentException("Devis with ID " + devisId + " not found");
+        throw new NoSuchElementException("Devis with ID " + devisId + " not found");
             }
 
+    }
+    private boolean isValidContractDates(Contract contract) {
+        Date today = new Date();
+        Date contractDate = contract.getContractDate();
+
+        return today.compareTo(contractDate) <= 0 && contract.getContractDate().before(contract.getEndDate());
     }
 
     public void archiveContract(UUID contractId) {
@@ -60,9 +74,11 @@ public class ContractServiceImpl implements ContractService {
             if (!contract.isArchived()) {
                 contract.setArchived(true);
                 contractRepository.save(contract);
+            }else {
+                throw new NoSuchElementException("Contract with ID " + contractId + " is already archived");
             }
         } else {
-            throw new EntityNotFoundException("Contract with ID " + contractId + " not found");
+            throw new NoSuchElementException("Contract with ID " + contractId + " not found");
         }
     }
 

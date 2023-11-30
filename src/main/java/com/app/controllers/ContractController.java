@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import com.app.dto.ContractDTO;
 import com.app.models.Contract;
 import com.app.services.impl.ContractServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class ContractController {
     }
 
     @GetMapping("/contracts/{id}")
-    public ResponseEntity<Contract> getContractById(@PathVariable UUID id) {
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable UUID id) {
 
-        Optional<Contract> contract = contractServiceImpl.getContractById(id);
+        Optional<ContractDTO> contract = contractServiceImpl.getContractById(id);
 
         if (contract.isPresent()) {
             return ResponseEntity.ok(contract.get());
@@ -59,7 +60,7 @@ public class ContractController {
     @PostMapping("/save/{devisId}")
     public ResponseEntity<String> saveContract(@RequestBody Contract contract, @PathVariable UUID devisId) {
         try {
-            contractServiceImpl.saveContractwithcheck(contract, devisId);
+            contractServiceImpl.saveContractwithcheck(contract,devisId);
             return ResponseEntity.ok("Contract saved successfully.");
 
         } catch (IllegalStateException | IllegalArgumentException e) {
