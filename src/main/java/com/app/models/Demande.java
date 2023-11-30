@@ -64,8 +64,8 @@ public class Demande {
   private Double demandeCost;
 	
   @JsonBackReference
-  @ManyToOne
-  @JoinColumn(name = "devis_id")
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "devis_id" )
   private Devis devis;
 
 
