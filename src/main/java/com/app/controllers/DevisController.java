@@ -1,12 +1,14 @@
 package com.app.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.app.models.Contract;
+import com.app.utils.ContractGenerator;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,5 +67,19 @@ public class DevisController {
 	        return ResponseEntity.badRequest().body(response);
 	    }
 		return devisService.updateDevis(id,status);
+	}
+
+
+	@GetMapping("/exportdevis/{id}")
+	public void generatePdfFile(@PathVariable UUID id, HttpServletResponse response) throws DocumentException, IOException, IOException {
+		response.setContentType("application/pdf");
+		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+		String currentDateTime = dateFormat.format(new Date());
+		String headerkey = "Content-Disposition";
+		String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
+		response.setHeader(headerkey, headervalue);
+
+
+
 	}
 }
