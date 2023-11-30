@@ -74,7 +74,7 @@ public class Demande {
 		return DemandeDTO.builder()
                 .id(id)
 				.demandeStatus(demandeStatus)
-				.user(user.maptoDto())
+				.user(user.getName())
 				.equipment(equipment.toDto())
 				.startDate(startDate)
 				.endDate(endDate)

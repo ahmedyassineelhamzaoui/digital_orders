@@ -21,13 +21,13 @@ public class DemandeDTO {
 
 	private UUID id;
     private DemandeStatus demandeStatus;
-    private UserDTO user;
+    private String user;
     private EquipmentDTO equipment ;
     private Date startDate;
     private Date endDate ;
 	public Demande mapToDemandeEntity(){
-		return Demande.builder().demandeStatus(demandeStatus)
-				.user(user.mapToEntity())
+		return Demande.builder()
+                .demandeStatus(demandeStatus)
 				.equipment(equipment.toEntity())
 				.startDate(startDate)
 				.endDate(endDate)

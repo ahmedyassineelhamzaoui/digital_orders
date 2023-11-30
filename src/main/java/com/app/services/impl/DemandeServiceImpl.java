@@ -88,42 +88,43 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> updateDemande2(UUID demandeId, DemandeDTO demande) {
-//        Map<String, Object> response = new HashMap<>();
-//        Demande oldDemande = getDemandeById(demandeId).orElseThrow(()->new NoSuchElementException("there is no demande with this id"));
-//        if(demande.getDemandeStatus() != null){
-//            oldDemande.setDemandeStatus(demande.getDemandeStatus());
-//        }
-//        if(demande.getEquipment() != null){
-//            Equipment equipment = equipmentServiceImpl.getEquipmentById(demande.getEquipment().getId()).orElseThrow(()->new NoSuchElementException("this equipment doesn't exist"));
-//            oldDemande.setEquipment(demande.getEquipment().toEntity());
-//        }
-//        if(demande.getDemandeStatus() != null){
-//            oldDemande.setDemandeStatus(demande.getDemandeStatus());
-//        }
-//        if(demande.getStartDate()!= null){
-//            List<Demande> demandeList = allreadyReserved(demande.getEquipment().getId() , demande.getStartDate() ,demande.getEndDate());
-//            if(!demandeList.isEmpty()){
-//                response.put("status", "error");
-//                response.put("message", "this Equipment is already reserved");
-//                response.put("damande", demandeList.stream().map(demande1 -> demande1.mapToDemandeDTO2() ));
-//                return ResponseEntity.badRequest().body(response);
-//            }
-//            oldDemande.setStartDate(demande.getStartDate());
-//        }
-//        if(demande.getEndDate()!= null){
-//            List<Demande> demandeList = allreadyReserved(demande.getEquipment().getId() , demande.getStartDate() ,demande.getEndDate());
-//            if(!demandeList.isEmpty()){
-//                response.put("status", "error");
-//                response.put("message", "this Equipment is already reserved");
-//                response.put("damande", demandeList.stream().map(demande1 -> demande1.mapToDemandeDTO2() ));
-//                return ResponseEntity.badRequest().body(response);
-//            }
-//            oldDemande.setEndDate(demande.getEndDate());
-//        }
-//        response.put("status", "Ok");
-//        response.put("message", "Demande Status Updated Successfuly");
-//        return ResponseEntity.ok(response);
-        return null;
+    public ResponseEntity<Map<String, Object>> updateDemande2(UUID demandeId, DemandeDTO demandeDTO) {
+        Map<String, Object> response = new HashMap<>();
+        Demande oldDemande = getDemandeById(demandeId).orElseThrow(()->new NoSuchElementException("there is no demande with this id"));
+        if(demandeDTO.getDemandeStatus() != null){
+            oldDemande.setDemandeStatus(demandeDTO.getDemandeStatus());
+        }
+        if(demandeDTO.getEquipment() != null){
+            Equipment equipment = equipmentServiceImpl.getEquipmentById(demandeDTO.getEquipment().getId()).orElseThrow(()->new NoSuchElementException("this equipment doesn't exist"));
+            oldDemande.setEquipment(demandeDTO.getEquipment().toEntity());
+        }
+        if(demandeDTO.getDemandeStatus() != null){
+            oldDemande.setDemandeStatus(demandeDTO.getDemandeStatus());
+        }
+        if(demandeDTO.getStartDate()!= null){
+            List<Demande> demandeList = allreadyReserved(oldDemande.getEquipment().getId() , demandeDTO.getStartDate() ,oldDemande.getEndDate());
+            if(!demandeList.isEmpty()){
+                response.put("status", "error");
+                response.put("message", "this Equipment is already reserved in this date");
+                response.put("damande", demandeList.stream().map(demande1 -> demande1.mapToDemandeDTO2() ));
+                return ResponseEntity.badRequest().body(response);
+            }
+            oldDemande.setStartDate(demandeDTO.getStartDate());
+        }
+        if(demandeDTO.getEndDate()!= null){
+            List<Demande> demandeList = allreadyReserved(oldDemande.getEquipment().getId() , oldDemande.getStartDate() ,demandeDTO.getEndDate());
+            if(!demandeList.isEmpty()){
+                response.put("status", "error");
+                response.put("message", "this Equipment is already reserved in this date");
+                response.put("damande", demandeList.stream().map(demande1 -> demande1.mapToDemandeDTO2() ));
+                return ResponseEntity.badRequest().body(response);
+            }
+            oldDemande.setEndDate(demandeDTO.getEndDate());
+        }
+        demandeRepository.save(oldDemande);
+        response.put("status", "Ok");
+        response.put("message", "Demande has breen Updated Successfuly");
+        return ResponseEntity.ok(response);
+//        return null;
     }
 }
