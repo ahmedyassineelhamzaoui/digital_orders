@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Builder
 @Data
@@ -17,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class DemandeDTO {
 
+	private UUID id;
     private DemandeStatus demandeStatus;
     private UserDTO user;
     private EquipmentDTO equipment ;

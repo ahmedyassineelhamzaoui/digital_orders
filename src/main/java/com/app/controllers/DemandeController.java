@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.app.dto.DemandeRequstDTO;
 import com.app.models.enums.DemandeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,11 +44,9 @@ public class DemandeController {
         private DemandeServiceImpl demandeServiceImpl ;
 
         @PostMapping("/demande")
-        public ResponseEntity<Map<String,Object>>  createDemand(@RequestBody Demande demande){
+        public ResponseEntity<Map<String,Object>>  createDemand(@RequestBody DemandeRequstDTO demande){
             return demandeServiceImpl.createDemand(demande);
         }
-
-
         @GetMapping("/demandes")
         public List<DemandeDTO> getAllDemandes(){
                 List<Demande> demandeList =demandeServiceImpl.getAllDemandes();
@@ -55,18 +54,12 @@ public class DemandeController {
                         demande -> demande.mapToDemandeDTO()
                 ).collect(Collectors.toList());
         }
-
         @DeleteMapping("/deleteDemande/{id}")
         public ResponseEntity<Map<String,Object>> deleteDemande(@PathVariable UUID id){
             return demandeServiceImpl.deleteDemande(id);
         }
-
-        @PutMapping("/updateDemande/{demandeId}")
-        public ResponseEntity<Map<String,Object>> updateDemande(@PathVariable UUID demandeId, @RequestBody Demande demande){
-            return null;
-        }
-        @PutMapping("/updateDemandeStatus/{demandeid}")
-        public ResponseEntity<Map<String , String>> updateDemandeStatus(@PathVariable UUID demandeId , @RequestBody DemandeStatus demandeStatus){
-            return demandeServiceImpl.updateDemandeStatus(demandeId , demandeStatus);
+        @PutMapping("/updateDemandeStatus/{id}")
+        public ResponseEntity<Map<String , Object>> updateDemande(@PathVariable UUID id , @RequestBody DemandeDTO demande){
+            return demandeServiceImpl.updateDemande2(id , demande);
         }
 }
