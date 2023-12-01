@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.app.dto.DemandeDTO;
 import com.app.dto.DemandeDTO2;
+import com.app.dto.DemandeRequstDTO;
 import com.app.dto.EquipmentDTO;
 import com.app.models.enums.DemandeStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -71,8 +72,9 @@ public class Demande {
 
 	public DemandeDTO mapToDemandeDTO(){
 		return DemandeDTO.builder()
+                .id(id)
 				.demandeStatus(demandeStatus)
-				.user(user.maptoDto())
+				.user(user.getName())
 				.equipment(equipment.toDto())
 				.startDate(startDate)
 				.endDate(endDate)
@@ -84,4 +86,13 @@ public class Demande {
 				.endDate(endDate)
 				.build();
 	}
+
+    public DemandeRequstDTO mapToDemandeRequstDTO(){
+        return DemandeRequstDTO.builder()
+                .userId(user.getId())
+                .equipmentId(equipment.getId())
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+    }
 }
