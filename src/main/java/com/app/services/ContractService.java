@@ -1,5 +1,6 @@
 package com.app.services;
 
+import com.app.dto.ContractDTO;
 import com.app.models.Contract;
 
 import java.util.List;
@@ -10,12 +11,12 @@ public interface ContractService {
 
     List<Contract> getAllContracts();
 
-    Optional<Contract> getContractById(UUID id);
+    Optional<ContractDTO> getContractById(UUID id);
 
     Contract saveContract(Contract contract);
     Contract saveContractwithcheck(Contract contract,UUID devisId);
 
-    //    Contract saveContractwithCheck(Contract contract,Long devisId);
+
     void archiveContract(UUID contractId);
 
 }

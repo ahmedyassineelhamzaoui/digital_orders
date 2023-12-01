@@ -1,5 +1,8 @@
 package com.app.models;
 
+import com.app.dto.CategoryDTO;
+import com.app.dto.ContractDTO;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,5 +44,11 @@ public class Contract {
 	@JoinColumn(name="devis_id")
 	private Devis devis;
 
-
+	public ContractDTO mapToDto() {
+		return ContractDTO.builder()
+				.contractDate(contractDate)
+				.endDate(endDate)
+				.devis(devis.DevisToDTO())
+				.build();
+	}
 }
