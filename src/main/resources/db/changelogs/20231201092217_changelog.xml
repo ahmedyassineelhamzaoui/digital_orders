@@ -1,0 +1,161 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="ahmed (generated)" id="1701422549928-1">
+        <createTable tableName="categories">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-2">
+        <createTable tableName="categories_equipments">
+            <column name="category_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="equipments_id" type="BINARY(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-3">
+        <createTable tableName="contracts">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="contract_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_archived" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="devis_id" type="BINARY(16)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-4">
+        <createTable tableName="demandes">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="demande_cost" type="DOUBLE"/>
+            <column name="demande_status" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="devis_id" type="BINARY(16)"/>
+            <column name="equipment_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-5">
+        <createTable tableName="devis">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="terms" type="VARCHAR(255)"/>
+            <column name="devis_status" type="TINYINT(3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-6">
+        <createTable tableName="documents">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="contract_id" type="BINARY(16)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-7">
+        <createTable tableName="equipments">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="equipment_status" type="TINYINT(3)"/>
+            <column name="image" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="registration_number" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="rental_price" type="DOUBLE"/>
+            <column name="category_id" type="BINARY(16)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-8">
+        <createTable tableName="users">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="role" type="TINYINT(3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-9">
+        <createIndex indexName="FK3mtsr48hp8jeif5bgbp16nxnd" tableName="demandes">
+            <column name="equipment_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-10">
+        <createIndex indexName="FK54jd8xubwjapofp3tqp9lmxx0" tableName="equipments">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-11">
+        <createIndex indexName="FK5q0nr046jlvo9r8p0qxs95jr9" tableName="demandes">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-12">
+        <createIndex indexName="FK7iieeg4xa96rqshh764i0jpe2" tableName="categories_equipments">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-13">
+        <createIndex indexName="FKlxob1pco91y0v7ikpeyedbmmd" tableName="demandes">
+            <column name="devis_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-14">
+        <addForeignKeyConstraint baseColumnNames="contract_id" baseTableName="documents" constraintName="FK2vdqkoispk6g3h588ous8o6e9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="contracts" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-15">
+        <addForeignKeyConstraint baseColumnNames="equipment_id" baseTableName="demandes" constraintName="FK3mtsr48hp8jeif5bgbp16nxnd" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="equipments" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-16">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="equipments" constraintName="FK54jd8xubwjapofp3tqp9lmxx0" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-17">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="demandes" constraintName="FK5q0nr046jlvo9r8p0qxs95jr9" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-18">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="categories_equipments" constraintName="FK7iieeg4xa96rqshh764i0jpe2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-19">
+        <addForeignKeyConstraint baseColumnNames="devis_id" baseTableName="demandes" constraintName="FKlxob1pco91y0v7ikpeyedbmmd" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="devis" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-20">
+        <addForeignKeyConstraint baseColumnNames="devis_id" baseTableName="contracts" constraintName="FKmbi74f8a0vrk7cs000nl68sxg" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="devis" validate="true"/>
+    </changeSet>
+    <changeSet author="ahmed (generated)" id="1701422549928-21">
+        <addForeignKeyConstraint baseColumnNames="equipments_id" baseTableName="categories_equipments" constraintName="FKsbr9snh0424s41kfrx15q7s41" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="equipments" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
