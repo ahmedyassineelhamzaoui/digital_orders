@@ -48,7 +48,6 @@ public class User {
 		return UserDTO.builder()
 				.name(name)
 				.email(email)
-				.role(role)
 				.build();
 	}
 }

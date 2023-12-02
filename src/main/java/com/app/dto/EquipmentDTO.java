@@ -2,6 +2,7 @@ package com.app.dto;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -24,10 +25,13 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Builder
 @Data
 public class EquipmentDTO {
-
+		@Nullable
+		private UUID id;
 	    @NotBlank(message = "Registration number is required")
 	    @Column(unique=true)
 	    private String registrationNumber;
@@ -50,6 +54,7 @@ public class EquipmentDTO {
 	    
 	    public Equipment toEntity() {
 	    	return Equipment.builder()
+					.id(id)
 	    			.name(name)
 	    			.registrationNumber(registrationNumber)
 	    			.rentalPrice(rentalPrice)

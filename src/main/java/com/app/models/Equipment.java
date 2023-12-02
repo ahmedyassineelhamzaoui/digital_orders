@@ -27,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "equipments")
@@ -59,6 +60,8 @@ public class Equipment {
     	return EquipmentDTO.builder()
     			.name(name)
     			.registrationNumber(registrationNumber)
+                .equipmentStatus(equipmentStatus)
+                .category(category.getName())
     			.rentalPrice(rentalPrice)
     			.build();
     }

@@ -36,7 +36,9 @@ public class DevisController {
 	
 	@PostMapping("/devis")
     public ResponseEntity<Map<String, Object>> addDevis(@Valid @RequestBody DevisDTO devisDto) {
-        return devisService.addDevis(devisDto.MapToDevis());
+		return devisService.addDevis(devisDto.MapToDevis());
+
+
     }
 	@GetMapping("/devis")
 	public ResponseEntity<List<Devis>> getAllDevis(){
