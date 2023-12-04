@@ -5,6 +5,7 @@ import com.app.models.Category;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
+
 @Builder
 public class CategoryDTO {
     
@@ -16,4 +17,5 @@ public class CategoryDTO {
 				.name(name)
 				.build();
 	}
+	
 }
