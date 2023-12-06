@@ -2,6 +2,7 @@ package com.app.controllers;
 
 import com.app.dto.ContractDTO;
 import com.app.models.Contract;
+import com.app.services.ContractService;
 import com.app.services.impl.ContractServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,18 +78,24 @@ public class ContractController {
     }
 
 
-    @GetMapping("/export-to-pdf")
-    public void generatePdfFile(HttpServletResponse response) throws DocumentException, IOException, IOException {
+    @GetMapping("/exportContract/{id}")
+    public void generatePdfFile(@PathVariable UUID id,HttpServletResponse response) throws DocumentException, IOException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
         String currentDateTime = dateFormat.format(new Date());
         String headerkey = "Content-Disposition";
         String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
         response.setHeader(headerkey, headervalue);
-
-
+        Optional<Contract> contract = contractServiceImpl.getContractById(id);
         ContractGenerator pdfcontract = new ContractGenerator();
-        pdfcontract.generate(response);
+
+        if (contract.isPresent()) {
+                pdfcontract.generate(contract.get(),response);
+
+        } else {
+
+        }
+
 
     }
 }

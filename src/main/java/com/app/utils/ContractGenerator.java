@@ -28,44 +28,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ContractGenerator {
 
-    public Date addHoursToJavaUtilDate(Date date, int hours) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY, hours);
-        return calendar.getTime();
-    }
-    public void generate(HttpServletResponse response) throws  IOException, IOException {
-        Contract contract = new Contract();
-        Equipment equipment = new Equipment();
-        Category category = new Category();
-        Date waqet = addHoursToJavaUtilDate(new Date(),24);
 
-        category.setName("motor");
-        equipment.setName("sfadsf");
-        equipment.setRegistrationNumber("htrthrt");
-        equipment.setCategory(category);
-        Double finalPrice = 0d;
-        Devis devis = new Devis();
-        Demande demande = new Demande();
-        demande.setDemandeCost(55d);
-        demande.setDevis(devis);
-        demande.setDemandeCost(200d);
-        demande.setStartDate(new Date());
-        demande.setEndDate(waqet);
-
-        demande.setDemandeStatus(DemandeStatus.ACCEPTED);
-        demande.setEquipment(equipment);
-        List<Demande> demandes = new ArrayList<>();
-        demandes.add(demande);
-        contract.setContractDate(new Date());
-        contract.setDevis(devis);
-        contract.setContractDate(new Date());
-        contract.setEndDate(new Date());
-        contract.setArchived(false);
-
-        devis.setDevisStatus(DevisStatus.ACCEPTED);
-        devis.setTerms("we both agree to the contract contra");
-        devis.setDemandes(demandes);
+    public void generate(Contract contract ,HttpServletResponse response) throws  IOException, IOException {
+      double finalPrice = 0;
 
         // Creating the Object of Document
         Document document = new Document(PageSize.A4);
