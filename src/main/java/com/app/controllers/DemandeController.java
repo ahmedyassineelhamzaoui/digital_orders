@@ -47,7 +47,7 @@ public class DemandeController {
         public ResponseEntity<Map<String,Object>> deleteDemande(@PathVariable UUID id){
             return demandeServiceImpl.deleteDemande(id);
         }
-        @PutMapping("/updateDemandeStatus/{id}")
+        @PutMapping("/updateDemande/{id}")
         public ResponseEntity<Map<String , Object>> updateDemande(@PathVariable UUID id , @RequestBody DemandeDTO demande){
             return demandeServiceImpl.updateDemande2(id , demande);
         }
