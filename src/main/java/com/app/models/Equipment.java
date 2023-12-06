@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.app.dto.EquipmentDTO;
+import com.app.dto.EquipmentResponseDTO;
 import com.app.models.enums.EquipmentStatus;
 
 import jakarta.persistence.Column;
@@ -64,6 +65,17 @@ public class Equipment {
                 .category(category.getName())
     			.rentalPrice(rentalPrice)
     			.build();
+    }
+    public EquipmentResponseDTO toDto2() {
+        return EquipmentResponseDTO.builder()
+                .id(id)
+                .name(name)
+                .registrationNumber(registrationNumber)
+                .equipmentStatus(equipmentStatus)
+                .category(category.getName())
+                .rentalPrice(rentalPrice)
+                .image(image)
+                .build();
     }
 
 }

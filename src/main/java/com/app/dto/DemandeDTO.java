@@ -22,7 +22,7 @@ public class DemandeDTO {
 	private UUID id;
     private DemandeStatus demandeStatus;
     private String user;
-    private EquipmentDTO equipment ;
+    private EquipmentResponseDTO equipment ;
     private Date startDate;
     private Date endDate ;
 	public Demande mapToDemandeEntity(){
