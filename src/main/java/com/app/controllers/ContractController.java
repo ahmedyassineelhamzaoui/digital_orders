@@ -39,15 +39,16 @@ public class ContractController {
     }
 
     @GetMapping("/contracts/{id}")
-    public ResponseEntity<ContractDTO> getContractById(@PathVariable UUID id) {
+    public ContractDTO getContractById(@PathVariable UUID id) {
+        return contractServiceImpl.getContractById(id).get().mapToDto();
 
-        Optional<ContractDTO> contract = contractServiceImpl.getContractById(id);
-
-        if (contract.isPresent()) {
-            return ResponseEntity.ok(contract.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+//        Optional<ContractDTO> contract = contractServiceImpl.getContractById(id);
+//
+//        if (contract.isPresent()) {
+//            return ResponseEntity.ok(contract.get());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
     }
 
 

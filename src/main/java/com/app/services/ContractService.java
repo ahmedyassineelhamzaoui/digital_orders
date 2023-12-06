@@ -11,7 +11,7 @@ public interface ContractService {
 
     List<Contract> getAllContracts();
 
-    Optional<ContractDTO> getContractById(UUID id);
+    Optional<Contract> getContractById(UUID id);
 
     Contract saveContract(Contract contract);
     Contract saveContractwithcheck(Contract contract,UUID devisId);

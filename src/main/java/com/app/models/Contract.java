@@ -48,7 +48,8 @@ public class Contract {
 		return ContractDTO.builder()
 				.contractDate(contractDate)
 				.endDate(endDate)
-				.devis(devis.DevisToDTO())
+				.devis(devis.DevisToResponseDTO())
 				.build();
 	}
+
 }
