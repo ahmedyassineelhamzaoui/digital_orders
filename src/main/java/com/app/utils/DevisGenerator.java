@@ -1,6 +1,7 @@
 package com.app.utils;
 
 import com.app.models.Demande;
+import com.app.models.Devis;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -22,8 +23,8 @@ import java.util.List;
 public class DevisGenerator {
 
 
-    public void generate(HttpServletResponse response) throws IOException, IOException {
-
+    public void generate(Devis devis, HttpServletResponse response) throws IOException, IOException {
+        double finalPrice = 0;
         // Creating the Object of Document
         Document document = new Document(PageSize.A4);
         // Getting instance of PdfWriter
@@ -38,13 +39,9 @@ public class DevisGenerator {
         imgg.scaleAbsolute(130, 90); // Set image width and height as needed
         document.add(imgg);
 
-        Paragraph Numberofdevi = new Paragraph("Numero de devis : 8831");
-        Numberofdevi.setAlignment(Paragraph.ALIGN_LEFT);
 
-        Paragraph datededevis = new Paragraph("Date : 20/10/2023");
-        datededevis.setAlignment(Paragraph.ALIGN_LEFT);
-        document.add(Numberofdevi);
-        document.add(datededevis);
+
+
 
 
         // Adding a condition title and paragraph
@@ -55,7 +52,7 @@ public class DevisGenerator {
         conditontitle.setSpacingBefore(40f);
         document.add(conditontitle);
 
-        Paragraph Conditions = new Paragraph("d");
+        Paragraph Conditions = new Paragraph(devis.getTerms());
         Conditions.setSpacingBefore(12f);
         Conditions.setAlignment(Paragraph.ALIGN_LEFT);
         Conditions.setSpacingAfter(30f);
@@ -89,7 +86,20 @@ public class DevisGenerator {
         cell.setPhrase(new Phrase("La date de retoure", font));
         table.addCell(cell);
         // Iterating the list of students
+        List<Demande> accepted = devis.getDemandes();
 
+        for (Demande d : accepted){
+
+            table.addCell(d.getEquipment().getCategory().getName());
+            table.addCell(d.getEquipment().getName());
+            table.addCell(d.getEquipment().getRegistrationNumber());
+            table.addCell(String.valueOf(d.getEndDate()));
+            table.addCell(String.valueOf(d.getStartDate()));
+
+            finalPrice = finalPrice + d.getDemandeCost();
+
+            System.out.println("nuoo "+String.valueOf(d.getStartDate()));
+        }
 
 
 
