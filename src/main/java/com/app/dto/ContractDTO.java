@@ -24,15 +24,13 @@ public class ContractDTO {
     private Date endDate;
 
     private boolean isArchived;
+    private DevisResponseDTO devis;
 
-//    @NotNull(message="devis is required")
-    private DevisDTO devis;
-
-    public Contract mapToEntity() {
-        return Contract.builder()
-                .contractDate(contractDate)
-                .endDate(endDate)
-                .devis(devis.MapToDevis())
-                .build();
-    }
+//    public Contract mapToEntity() {
+//        return Contract.builder()
+//                .contractDate(contractDate)
+//                .endDate(endDate)
+//                .devis(devis.MapToDevis())
+//                .build();
+//    }
 }

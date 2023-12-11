@@ -2,8 +2,10 @@ package com.app.models;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.app.dto.DevisDTO;
+import com.app.dto.DevisResponseDTO;
 import com.app.models.enums.DevisStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -47,6 +49,13 @@ public class Devis {
 				.devisStatus(devisStatus)
 				.Terms(Terms)
 				.demandes(demandes)
+				.build();
+	}
+	public DevisResponseDTO DevisToResponseDTO(){
+		return DevisResponseDTO.builder()
+				.devisStatus(devisStatus)
+				.Terms(Terms)
+				.demandes(demandes.stream().map(demande -> demande.mapToDemandeRequstDTO()).collect(Collectors.toList()))
 				.build();
 	}
 }
