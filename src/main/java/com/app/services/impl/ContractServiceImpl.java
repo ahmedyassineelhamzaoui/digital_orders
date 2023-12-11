@@ -25,11 +25,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<Contract> getAllContracts(){return contractRepository.findAll();}
     @Override
-    public Optional<ContractDTO> getContractById(UUID id) {
+    public Optional<Contract> getContractById(UUID id) {
 
         Optional<Contract> contract = contractRepository.findById(id);
-
-        return contract.map(Contract::mapToDto);
+        return contract;
+//        return contract.map(Contract::mapToDto);
     }
     public Contract saveContract(Contract contract) {
 

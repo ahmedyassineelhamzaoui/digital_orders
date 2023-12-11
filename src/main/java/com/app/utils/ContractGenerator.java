@@ -97,8 +97,9 @@ public class ContractGenerator {
            table.addCell(d.getEquipment().getRegistrationNumber());
            table.addCell(String.valueOf(d.getEndDate()));
            table.addCell(String.valueOf(d.getStartDate()));
-
-           finalPrice = finalPrice + d.getDemandeCost();
+            if(d.getDemandeCost() != null){
+                finalPrice = finalPrice + d.getDemandeCost();
+            }
 
            System.out.println("nuoo "+String.valueOf(d.getStartDate()));
        }

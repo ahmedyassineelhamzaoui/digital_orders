@@ -23,6 +23,7 @@ public class DemandeDTO {
     private DemandeStatus demandeStatus;
     private String user;
     private EquipmentResponseDTO equipment ;
+	private Double demandeCost;
     private Date startDate;
     private Date endDate ;
 	public Demande mapToDemandeEntity(){

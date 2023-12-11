@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -54,8 +55,12 @@ public class Equipment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
-    
+    @Nullable
     private String image;
+
+    public void setImage(@Nullable String image) {
+        this.image = image;
+    }
     
     public EquipmentDTO toDto() {
     	return EquipmentDTO.builder()

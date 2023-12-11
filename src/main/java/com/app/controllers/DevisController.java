@@ -7,6 +7,7 @@ import java.util.*;
 
 import com.app.models.Contract;
 import com.app.utils.ContractGenerator;
+import com.app.utils.DevisGenerator;
 import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,11 @@ public class DevisController {
 		String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
 		response.setHeader(headerkey, headervalue);
 
+		DevisGenerator generator = new DevisGenerator();
+		Optional<Devis> devis = devisService.getDevisById(id);
+		if(devis.isPresent()) {
+			generator.generate(devis.get(),response);
+		}
 
 
 	}
