@@ -75,7 +75,7 @@ public class Demande {
                 .id(id)
 				.demandeStatus(demandeStatus)
 				.user(user.getName())
-				.equipment(equipment.toDto())
+				.equipment(equipment.toDto2())
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();
