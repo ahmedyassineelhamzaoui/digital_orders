@@ -65,6 +65,8 @@ public class DevisServiceImpl implements DevisService {
 		Devis devisSaved = devisRepository.save(devis);
 		for(Demande d:mydemandes) {
 			Demande demande = demandeServiceImpl.getDemandeById(d.getId()).get();
+			demande.setDemandeCost(demande.getEquipment().getRentalPrice());
+			demandeServiceImpl.updateDemande2(d.getId(),demande.mapToDemandeDTO());
         	demande.setDevis(devisSaved);	
         	demandeServiceImpl.updateDemande(d.getId(), demande);
 		}

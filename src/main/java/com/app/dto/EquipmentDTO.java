@@ -49,7 +49,6 @@ public class EquipmentDTO {
 
 
 	    private String category;
-
 	    private MultipartFile image;
 	    
 	    public Equipment toEntity() {

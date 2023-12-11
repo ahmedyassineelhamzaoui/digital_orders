@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
-public class ContractController {
+public class    ContractController {
     @Autowired
     public ContractServiceImpl contractServiceImpl;
 
