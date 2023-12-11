@@ -86,11 +86,11 @@ public class    ContractController {
         String headerkey = "Content-Disposition";
         String headervalue = "attachment; filename=student" + currentDateTime + ".pdf";
         response.setHeader(headerkey, headervalue);
-        Optional<ContractDTO> contract = contractServiceImpl.getContractById(id);
+        Optional<Contract> contract = contractServiceImpl.getContractById(id);
         ContractGenerator pdfcontract = new ContractGenerator();
 
         if (contract.isPresent()) {
-                pdfcontract.generate(contract.get().mapToEntity(),response);
+                //pdfcontract.generate(contract.get().mapToDto(),response);
 
         } else {
 
