@@ -5,6 +5,8 @@ import firebase.utils.config.Const.Constants;
 import firebase.utils.helper.FilesManager;
 import firebase.utils.helper.ResponseHandler;
 import com.google.auth.Credentials;
+import java.net.URI;
+import java.net.URISyntaxException;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
@@ -58,5 +60,16 @@ public class FileStorageServiceImpl implements FileStoreService {
         Blob blob = storage.get(BlobId.of(Constants.BUCKET_NAME, fileName));
         blob.downloadTo(Paths.get(destFilePath));
         return responseHandler.sendResponse("200", "Successfully Downloaded!");
+    }
+
+    public  String extractPath(String url) {
+        try {
+            URI uri = new URI(url);
+            return uri.getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            // Handle the exception according to your requirements
+            return null;
+        }
     }
 }

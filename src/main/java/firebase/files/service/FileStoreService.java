@@ -9,4 +9,7 @@ public interface FileStoreService {
     Object upload(MultipartFile multipartFile);
 
     Object download(String fileName) throws IOException;
+
+    String extractPath(String url) ;
+
 }
