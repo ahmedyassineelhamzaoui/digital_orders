@@ -86,6 +86,7 @@ public class DevisServiceImpl implements DevisService {
 		}
 		DevisStatus devisStatus = DevisStatus.valueOf(status); 
 		devisToFind.get().setDevisStatus(devisStatus);
+		devisRepository.save(devisToFind.get());
 		response.put("status", "success");
 		response.put("message","status of devis has been updated successfuly");
 		response.put("devis", devisToFind);

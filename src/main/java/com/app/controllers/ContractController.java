@@ -90,7 +90,7 @@ public class    ContractController {
         ContractGenerator pdfcontract = new ContractGenerator();
 
         if (contract.isPresent()) {
-                pdfcontract.generate(contract.get(),response);
+                //pdfcontract.generate(contract.get().mapToDto(),response);
 
         } else {
 
